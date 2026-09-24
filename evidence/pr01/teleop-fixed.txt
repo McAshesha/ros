@@ -1,0 +1,10 @@
++ ros2 topic echo /turtle1/pose --once
++ head -3
+x: 11.088889122009277
+y: 5.7438178062438965
+theta: 0.09600000083446503
++ ros2 topic echo /turtle1/pose --once
++ head -3
+x: 11.088889122009277
+y: 5.7438178062438965
+theta: -2.1551852226257324

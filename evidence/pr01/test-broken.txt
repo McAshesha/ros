@@ -1,0 +1,6 @@
++ ros2 node list --no-daemon --spin-time 2
+ROS_DOMAIN_ID=17 POSE_TYPE=turtlesim_msgs/msg/Pose
+/teleop_turtle
++ timeout 5s ros2 topic echo /turtle1/pose turtlesim_msgs/msg/Pose --once
++ printf 'exit=%s\n' 124
+exit=124

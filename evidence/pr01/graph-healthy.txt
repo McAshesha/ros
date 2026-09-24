@@ -1,0 +1,100 @@
++ ros2 node list --no-daemon --spin-time 2
+/teleop_turtle
+/turtlesim
++ ros2 topic list -t
+/parameter_events [rcl_interfaces/msg/ParameterEvent]
+/rosout [rcl_interfaces/msg/Log]
+/turtle1/cmd_vel [geometry_msgs/msg/Twist]
+/turtle1/color_sensor [turtlesim_msgs/msg/Color]
+/turtle1/pose [turtlesim_msgs/msg/Pose]
++ ros2 node info /turtlesim
+/turtlesim
+  Subscribers:
+    /parameter_events: rcl_interfaces/msg/ParameterEvent
+    /turtle1/cmd_vel: geometry_msgs/msg/Twist
+  Publishers:
+    /parameter_events: rcl_interfaces/msg/ParameterEvent
+    /rosout: rcl_interfaces/msg/Log
+    /turtle1/color_sensor: turtlesim_msgs/msg/Color
+    /turtle1/pose: turtlesim_msgs/msg/Pose
+  Service Servers:
+    /clear: std_srvs/srv/Empty
+    /kill: turtlesim_msgs/srv/Kill
+    /reset: std_srvs/srv/Empty
+    /spawn: turtlesim_msgs/srv/Spawn
+    /turtle1/set_pen: turtlesim_msgs/srv/SetPen
+    /turtle1/teleport_absolute: turtlesim_msgs/srv/TeleportAbsolute
+    /turtle1/teleport_relative: turtlesim_msgs/srv/TeleportRelative
+    /turtlesim/describe_parameters: rcl_interfaces/srv/DescribeParameters
+    /turtlesim/get_parameter_types: rcl_interfaces/srv/GetParameterTypes
+    /turtlesim/get_parameters: rcl_interfaces/srv/GetParameters
+    /turtlesim/get_type_description: type_description_interfaces/srv/GetTypeDescription
+    /turtlesim/list_parameters: rcl_interfaces/srv/ListParameters
+    /turtlesim/set_parameters: rcl_interfaces/srv/SetParameters
+    /turtlesim/set_parameters_atomically: rcl_interfaces/srv/SetParametersAtomically
+  Service Clients:
+
+  Action Servers:
+    /turtle1/rotate_absolute: turtlesim_msgs/action/RotateAbsolute
+  Action Clients:
+
++ ros2 node info /teleop_turtle
+/teleop_turtle
+  Subscribers:
+
+  Publishers:
+    /parameter_events: rcl_interfaces/msg/ParameterEvent
+    /rosout: rcl_interfaces/msg/Log
+    /turtle1/cmd_vel: geometry_msgs/msg/Twist
+  Service Servers:
+    /teleop_turtle/describe_parameters: rcl_interfaces/srv/DescribeParameters
+    /teleop_turtle/get_parameter_types: rcl_interfaces/srv/GetParameterTypes
+    /teleop_turtle/get_parameters: rcl_interfaces/srv/GetParameters
+    /teleop_turtle/get_type_description: type_description_interfaces/srv/GetTypeDescription
+    /teleop_turtle/list_parameters: rcl_interfaces/srv/ListParameters
+    /teleop_turtle/set_parameters: rcl_interfaces/srv/SetParameters
+    /teleop_turtle/set_parameters_atomically: rcl_interfaces/srv/SetParametersAtomically
+  Service Clients:
+
+  Action Servers:
+
+  Action Clients:
+    /turtle1/rotate_absolute: turtlesim_msgs/action/RotateAbsolute
++ ros2 topic type /turtle1/pose
+turtlesim_msgs/msg/Pose
++ ros2 topic echo /turtle1/pose --once
+x: 11.088889122009277
+y: 5.7438178062438965
+theta: 0.09600000083446503
+linear_velocity: 0.0
+angular_velocity: 0.0
+---
++ date -u +%FT%TZ
+2026-09-24T07:21:24Z
++ timeout -s INT 12s ros2 topic hz /turtle1/pose
+average rate: 62.708
+	min: 0.010s max: 0.022s std dev: 0.00229s window: 62
+average rate: 62.578
+	min: 0.010s max: 0.022s std dev: 0.00203s window: 125
+average rate: 62.607
+	min: 0.010s max: 0.022s std dev: 0.00196s window: 187
+average rate: 62.537
+	min: 0.010s max: 0.022s std dev: 0.00191s window: 250
+average rate: 62.573
+	min: 0.010s max: 0.022s std dev: 0.00186s window: 313
+average rate: 62.540
+	min: 0.010s max: 0.022s std dev: 0.00181s window: 375
+average rate: 62.526
+	min: 0.010s max: 0.022s std dev: 0.00181s window: 438
+average rate: 62.522
+	min: 0.010s max: 0.022s std dev: 0.00183s window: 500
+average rate: 62.515
+	min: 0.010s max: 0.022s std dev: 0.00183s window: 563
+average rate: 62.527
+	min: 0.010s max: 0.022s std dev: 0.00183s window: 626
+average rate: 62.520
+	min: 0.010s max: 0.022s std dev: 0.00179s window: 688
++ echo hz_exit=124
++ date -u +%FT%TZ
+hz_exit=124
+2026-09-24T07:21:37Z
