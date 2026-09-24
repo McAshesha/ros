@@ -88,8 +88,29 @@ python3 -m py_compile src/turtle_bringup/launch/sim.launch.py
 python3 .course-kit/v1/tools/check_practice.py PR02 --submission .
 ```
 
+## ПР03. Нода `patrol`
+
+Пакет `src/patrol` (ament_python), команда `patrol`. Подписка на `/turtle1/pose` хранит
+последнюю позу. Таймер 0.1 с публикует `geometry_msgs/msg/Twist` в относительный
+`cmd_vel`: нулевой до первой позы, затем `linear.x=0.5`, `angular.z=0.3`. Выбор команды
+вынесен в чистую функцию `choose_command`.
+
+```bash
+source /opt/ros/lyrical/setup.bash
+colcon build --symlink-install --packages-select patrol
+source install/setup.bash
+python3 -m pytest src/patrol/test
+ros2 launch turtle_bringup sim.launch.py                         # A
+ros2 run patrol patrol                                           # B: сбой, публикует в /cmd_vel
+ros2 run patrol patrol --ros-args -r cmd_vel:=/turtle1/cmd_vel   # B: исправление
+ros2 topic info /turtle1/cmd_vel --verbose                       # C
+ros2 topic hz /turtle1/cmd_vel                                   # C: ~10 Гц
+python3 .course-kit/v1/tools/check_practice.py PR03 --submission .
+```
+
 ## CI
 
-`.github/workflows/ci.yml` проверяет JSON среды ПР01, собирает `turtle_bringup` и
-проверяет установленный `sim.launch.py`. Затем скачивает зафиксированный course kit
-`v1-w03` и запускает checker текущей ПР. Живой опыт с GUI выполняется локально.
+`.github/workflows/ci.yml` проверяет JSON среды ПР01. Затем ставит зависимости через
+`rosdep`, собирает все пакеты, проверяет установленный `sim.launch.py` и запускает
+`colcon test` и `pytest` пакета `patrol`. После этого скачивает зафиксированный course
+kit `v1-w03` и запускает checker текущей ПР. Живой опыт с GUI выполняется локально.
