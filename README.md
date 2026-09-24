@@ -61,5 +61,35 @@ export ROS_DOMAIN_ID=16
    python3 .course-kit/v1/tools/check_practice.py PR01 --submission .
    ```
 
-CI (`.github/workflows/ci.yml`) проверяет JSON среды и комплектность evidence через
-зафиксированный course kit `v1-w03`. Живой опыт выполняется локально.
+## ПР02. Пакет `turtle_bringup` и launch turtlesim
+
+Пакет `src/turtle_bringup` (ament_python) устанавливает `launch/sim.launch.py`,
+который запускает готовую ноду `turtlesim_node`.
+
+```bash
+source /opt/ros/lyrical/setup.bash
+set -o pipefail
+colcon build --symlink-install --packages-select turtle_bringup 2>&1 | tee evidence/pr02/build.txt
+source install/setup.bash
+export ROS_DOMAIN_ID=16
+ros2 launch turtle_bringup sim.launch.py            # A; остановка — Ctrl+C
+# B: одна команда движения
+ros2 topic pub --once /turtle1/cmd_vel geometry_msgs/msg/Twist '{linear: {x: 1.0}, angular: {z: 0.5}}'
+# сбой имени: издатель без подписчика
+ros2 topic pub --rate 1 --wait-matching-subscriptions 0 /cmd_vel geometry_msgs/msg/Twist '{linear: {x: 1.0}, angular: {z: 0.5}}'
+ros2 topic info /cmd_vel --verbose                  # C: Subscription count: 0
+# исправление: только имя /cmd_vel -> /turtle1/cmd_vel, та же проверка
+```
+
+Проверка сдачи:
+
+```bash
+python3 -m py_compile src/turtle_bringup/launch/sim.launch.py
+python3 .course-kit/v1/tools/check_practice.py PR02 --submission .
+```
+
+## CI
+
+`.github/workflows/ci.yml` проверяет JSON среды ПР01, собирает `turtle_bringup` и
+проверяет установленный `sim.launch.py`. Затем скачивает зафиксированный course kit
+`v1-w03` и запускает checker текущей ПР. Живой опыт с GUI выполняется локально.
