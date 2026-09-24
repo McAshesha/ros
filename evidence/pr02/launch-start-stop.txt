@@ -1,0 +1,18 @@
++ ros2 node list --no-daemon --spin-time 2
+/turtlesim
++ pgrep -a turtlesim_node
+21514 /opt/ros/lyrical/lib/turtlesim/turtlesim_node --ros-args
++ pgrep -a turtlesim_node
++ echo pgrep_exit=1
++ ros2 node list --no-daemon --spin-time 2
+pgrep_exit=1
+--- launch log:
+[INFO] [launch]: All log files can be found below /home/ubuntu/.ros/log/2026-09-24-09-28-54-772027-99014441bed2-21482
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [turtlesim_node-1]: process started with pid [21514]
+[turtlesim_node-1] [INFO] [1790242135.274368972] [turtlesim]: Starting turtlesim with node name /turtlesim
+[turtlesim_node-1] [INFO] [1790242135.288734388] [turtlesim]: Spawning turtle [turtle1] at x=[5.544445], y=[5.544445], theta=[0.000000]
+[WARNING] [launch]: user interrupted with ctrl-c (SIGINT)
+[INFO] [turtlesim_node-1]: sending signal 'SIGINT' to process[turtlesim_node-1]
+[turtlesim_node-1] [INFO] [1790242142.273762461] [rclcpp]: signal_handler(signum=2)
+[INFO] [turtlesim_node-1]: process has finished cleanly [pid 21514]

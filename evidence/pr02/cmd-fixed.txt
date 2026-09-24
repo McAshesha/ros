@@ -1,0 +1,65 @@
++ ros2 topic echo /turtle1/pose --once
+x: 6.509308815002441
+y: 5.796990871429443
+theta: 0.5040000081062317
+linear_velocity: 0.0
+angular_velocity: 0.0
+---
++ ros2 topic info /cmd_vel --verbose
+Unknown topic '/cmd_vel'
++ ros2 topic info /turtle1/cmd_vel --verbose
+Type: geometry_msgs/msg/Twist
+
+Publisher count: 1
+
+Node name: _ros2cli_22190
+Node namespace: /
+Topic type: geometry_msgs/msg/Twist
+Topic type hash: RIHS01_9c45bf16fe0983d80e3cfe750d6835843d265a9a6c46bd2e609fcddde6fb8d2a
+Endpoint type: PUBLISHER
+GID: 01.0f.eb.7d.ae.56.94.d3.00.00.00.00.00.00.07.03
+QoS profile:
+  Reliability: RELIABLE
+  History (Depth): KEEP_LAST (10)
+  Durability: VOLATILE
+  Lifespan: Infinite
+  Deadline: Infinite
+  Liveliness: AUTOMATIC
+  Liveliness lease duration: Infinite
+
+Subscription count: 1
+
+Node name: turtlesim
+Node namespace: /
+Topic type: geometry_msgs/msg/Twist
+Topic type hash: RIHS01_9c45bf16fe0983d80e3cfe750d6835843d265a9a6c46bd2e609fcddde6fb8d2a
+Endpoint type: SUBSCRIPTION
+GID: 01.0f.eb.7d.c6.54.5b.19.00.00.00.00.00.00.1c.04
+QoS profile:
+  Reliability: RELIABLE
+  History (Depth): KEEP_LAST (7)
+  Durability: VOLATILE
+  Lifespan: Infinite
+  Deadline: Infinite
+  Liveliness: AUTOMATIC
+  Liveliness lease duration: Infinite
+
++ ros2 topic echo /turtle1/pose --once
+x: 5.842424392700195
+y: 9.520895004272461
+theta: 2.9839999675750732
+linear_velocity: 1.0
+angular_velocity: 0.5
+---
++ ros2 topic echo /turtle1/pose --once
+x: 4.819915294647217
+y: 9.411680221557617
+theta: -2.7791852951049805
+linear_velocity: 0.0
+angular_velocity: 0.0
+---
+--- publisher log:
+publishing #5: geometry_msgs.msg.Twist(linear=geometry_msgs.msg.Vector3(x=1.0, y=0.0, z=0.0), angular=geometry_msgs.msg.Vector3(x=0.0, y=0.0, z=0.5))
+
+publishing #6: geometry_msgs.msg.Twist(linear=geometry_msgs.msg.Vector3(x=1.0, y=0.0, z=0.0), angular=geometry_msgs.msg.Vector3(x=0.0, y=0.0, z=0.5))
+

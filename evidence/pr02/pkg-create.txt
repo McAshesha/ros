@@ -1,0 +1,62 @@
++ cd src
++ ros2 pkg create --build-type ament_python --license Apache-2.0 turtle_bringup --dependencies launch launch_ros turtlesim
+going to create a new package
+package name: turtle_bringup
+destination directory: /home/ubuntu/robotics_ws/src
+package format: 3
+version: 0.0.0
+description: TODO: Package description
+maintainer: ['ubuntu <ubuntu@todo.todo>']
+licenses: ['Apache-2.0']
+build type: ament_python
+dependencies: ['launch', 'launch_ros', 'turtlesim']
+creating folder ./turtle_bringup
+creating ./turtle_bringup/package.xml
+creating source folder
+creating folder ./turtle_bringup/turtle_bringup
+creating ./turtle_bringup/setup.py
+creating ./turtle_bringup/setup.cfg
+creating folder ./turtle_bringup/resource
+creating ./turtle_bringup/resource/turtle_bringup
+creating ./turtle_bringup/turtle_bringup/__init__.py
+creating ./turtle_bringup/turtle_bringup/py.typed
+creating folder ./turtle_bringup/test
+creating ./turtle_bringup/test/test_copyright.py
+creating ./turtle_bringup/test/test_flake8.py
+creating ./turtle_bringup/test/test_mypy.py
+creating ./turtle_bringup/test/test_pep257.py
+creating ./turtle_bringup/test/test_xmllint.py
++ cd ..
++ ls src/turtle_bringup
+LICENSE
+package.xml
+resource
+setup.cfg
+setup.py
+test
+turtle_bringup
++ cat src/turtle_bringup/package.xml
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>turtle_bringup</name>
+  <version>0.0.0</version>
+  <description>TODO: Package description</description>
+  <maintainer email="ubuntu@todo.todo">ubuntu</maintainer>
+  <license>Apache-2.0</license>
+
+  <depend>launch</depend>
+  <depend>launch_ros</depend>
+  <depend>turtlesim</depend>
+
+  <test_depend>ament_copyright</test_depend>
+  <test_depend>ament_flake8</test_depend>
+  <test_depend>ament_mypy</test_depend>
+  <test_depend>ament_pep257</test_depend>
+  <test_depend>ament_xmllint</test_depend>
+  <test_depend>python3-pytest</test_depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>

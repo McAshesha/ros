@@ -1,0 +1,23 @@
+++ git rev-parse --show-toplevel
++ cd /home/ubuntu/robotics_ws
++ pwd
++ ls -a
+/home/ubuntu/robotics_ws
+.
+..
+.course-kit
+.git
+.github
+.gitignore
+AI_USAGE.md
+README.md
+evidence
+robotics-course-kit-v1-w03-7fbfd3e8161a.tar.gz
+robotics-course-kit-v1-w03-7fbfd3e8161a.tar.gz.sha256.txt
+src
++ mkdir -p src evidence/pr02
++ printenv ROS_DISTRO ROS_DOMAIN_ID
+lyrical
+16
++ ros2 pkg prefix turtlesim
+/opt/ros/lyrical

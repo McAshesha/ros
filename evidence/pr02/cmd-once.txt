@@ -1,0 +1,36 @@
++ ros2 node list --no-daemon --spin-time 2
+/turtlesim
++ ros2 interface show geometry_msgs/msg/Twist
+# This expresses velocity in free space broken into its linear and angular parts.
+
+Vector3  linear
+	float64 x
+	float64 y
+	float64 z
+Vector3  angular
+	float64 x
+	float64 y
+	float64 z
++ ros2 topic type /turtle1/pose
+turtlesim_msgs/msg/Pose
++ ros2 topic type /turtle1/cmd_vel
+geometry_msgs/msg/Twist
++ ros2 topic echo /turtle1/pose --once
+x: 5.544444561004639
+y: 5.544444561004639
+theta: 0.0
+linear_velocity: 0.0
+angular_velocity: 0.0
+---
++ ros2 topic pub --once /turtle1/cmd_vel geometry_msgs/msg/Twist '{linear: {x: 1.0}, angular: {z: 0.5}}'
+publisher: beginning loop
+publishing #1: geometry_msgs.msg.Twist(linear=geometry_msgs.msg.Vector3(x=1.0, y=0.0, z=0.0), angular=geometry_msgs.msg.Vector3(x=0.0, y=0.0, z=0.5))
+
++ sleep 2
++ ros2 topic echo /turtle1/pose --once
+x: 6.509308815002441
+y: 5.796990871429443
+theta: 0.5040000081062317
+linear_velocity: 0.0
+angular_velocity: 0.0
+---
