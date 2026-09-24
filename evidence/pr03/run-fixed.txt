@@ -1,0 +1,105 @@
++ ros2 node list --no-daemon --spin-time 2
+/patrol
+/turtlesim
++ ros2 node info /patrol
+/patrol
+  Subscribers:
+    /turtle1/pose: turtlesim_msgs/msg/Pose
+  Publishers:
+    /parameter_events: rcl_interfaces/msg/ParameterEvent
+    /rosout: rcl_interfaces/msg/Log
+    /turtle1/cmd_vel: geometry_msgs/msg/Twist
+  Service Servers:
+    /patrol/describe_parameters: rcl_interfaces/srv/DescribeParameters
+    /patrol/get_parameter_types: rcl_interfaces/srv/GetParameterTypes
+    /patrol/get_parameters: rcl_interfaces/srv/GetParameters
+    /patrol/get_type_description: type_description_interfaces/srv/GetTypeDescription
+    /patrol/list_parameters: rcl_interfaces/srv/ListParameters
+    /patrol/set_parameters: rcl_interfaces/srv/SetParameters
+    /patrol/set_parameters_atomically: rcl_interfaces/srv/SetParametersAtomically
+  Service Clients:
+
+  Action Servers:
+
+  Action Clients:
+
++ ros2 topic info /cmd_vel --verbose
+Unknown topic '/cmd_vel'
++ ros2 topic info /turtle1/cmd_vel --verbose
+Type: geometry_msgs/msg/Twist
+
+Publisher count: 1
+
+Node name: patrol
+Node namespace: /
+Topic type: geometry_msgs/msg/Twist
+Topic type hash: RIHS01_9c45bf16fe0983d80e3cfe750d6835843d265a9a6c46bd2e609fcddde6fb8d2a
+Endpoint type: PUBLISHER
+GID: 01.0f.eb.7d.3d.ab.ae.0b.00.00.00.00.00.00.14.03
+QoS profile:
+  Reliability: RELIABLE
+  History (Depth): KEEP_LAST (10)
+  Durability: VOLATILE
+  Lifespan: Infinite
+  Deadline: Infinite
+  Liveliness: AUTOMATIC
+  Liveliness lease duration: Infinite
+
+Subscription count: 1
+
+Node name: turtlesim
+Node namespace: /
+Topic type: geometry_msgs/msg/Twist
+Topic type hash: RIHS01_9c45bf16fe0983d80e3cfe750d6835843d265a9a6c46bd2e609fcddde6fb8d2a
+Endpoint type: SUBSCRIPTION
+GID: 01.0f.eb.7d.f8.a9.03.c5.00.00.00.00.00.00.1c.04
+QoS profile:
+  Reliability: RELIABLE
+  History (Depth): KEEP_LAST (7)
+  Durability: VOLATILE
+  Lifespan: Infinite
+  Deadline: Infinite
+  Liveliness: AUTOMATIC
+  Liveliness lease duration: Infinite
+
++ ros2 topic echo /turtle1/pose --once
+x: 6.901154041290283
+y: 8.173527717590332
+theta: 2.184000015258789
+linear_velocity: 0.5
+angular_velocity: 0.30000001192092896
+---
++ date -u +%FT%TZ
+2026-09-24T12:12:29Z
++ timeout -s INT 11s ros2 topic hz /turtle1/cmd_vel
+average rate: 9.984
+	min: 0.096s max: 0.103s std dev: 0.00228s window: 9
+average rate: 9.989
+	min: 0.096s max: 0.103s std dev: 0.00169s window: 19
+average rate: 9.992
+	min: 0.094s max: 0.106s std dev: 0.00224s window: 29
+average rate: 9.994
+	min: 0.094s max: 0.106s std dev: 0.00209s window: 39
+average rate: 9.998
+	min: 0.091s max: 0.110s std dev: 0.00281s window: 49
+average rate: 9.994
+	min: 0.091s max: 0.110s std dev: 0.00261s window: 59
+average rate: 9.997
+	min: 0.091s max: 0.110s std dev: 0.00246s window: 69
+average rate: 9.998
+	min: 0.091s max: 0.110s std dev: 0.00232s window: 79
+average rate: 9.999
+	min: 0.091s max: 0.110s std dev: 0.00224s window: 89
+average rate: 9.999
+	min: 0.091s max: 0.110s std dev: 0.00214s window: 99
++ echo hz_exit=124
++ date -u +%FT%TZ
+hz_exit=124
+2026-09-24T12:12:41Z
++ ros2 topic echo /turtle1/pose --once
+x: 5.640408992767334
+y: 5.547440528869629
+theta: 0.05761469900608063
+linear_velocity: 0.5
+angular_velocity: 0.30000001192092896
+---

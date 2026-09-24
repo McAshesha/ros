@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "practice_id": "PR03",
+  "commit": "a281d9433718c381d6a8af55afa050c149a2c1c9",
+  "course_kit": {
+    "version": "v1-w03",
+    "archive_sha256": "7fbfd3e8161ab6c6ebefc7663efdaf77d9a7d490399743507f33dcefbd5ac522"
+  },
+  "commands": [
+    "ros2 pkg create --build-type ament_python --license Apache-2.0 --node-name patrol patrol --dependencies rclpy geometry_msgs",
+    "colcon build --symlink-install --packages-select patrol",
+    "ros2 run patrol patrol",
+    "ros2 node list --no-daemon --spin-time 2",
+    "ros2 node info /patrol",
+    "python3 -m pytest src/patrol/test -v",
+    "colcon test --packages-select turtle_bringup patrol",
+    "colcon test-result --verbose",
+    "ros2 launch turtle_bringup sim.launch.py",
+    "ros2 topic type /turtle1/pose",
+    "ros2 topic info /cmd_vel --verbose",
+    "ros2 topic info /turtle1/cmd_vel --verbose",
+    "ros2 topic echo /turtle1/pose --once",
+    "timeout -s INT 5s ros2 topic echo /cmd_vel --once",
+    "ros2 run patrol patrol --ros-args -r cmd_vel:=/turtle1/cmd_vel",
+    "timeout -s INT 11s ros2 topic hz /turtle1/cmd_vel",
+    "ros2 topic echo /turtle1/pose turtlesim_msgs/msg/Pose --field linear_velocity",
+    "python3 .course-kit/v1/tools/check_practice.py PR03 --submission ."
+  ],
+  "tests": [
+    {
+      "name": "unit: choose_command(None) -> zero Twist",
+      "status": "passed"
+    },
+    {
+      "name": "unit: choose_command(pose) -> linear.x=0.5, angular.z=0.3, other fields 0",
+      "status": "passed"
+    },
+    {
+      "name": "unit: choose_command does not depend on pose values",
+      "status": "passed"
+    },
+    {
+      "name": "lint: flake8, pep257, mypy, xmllint for patrol",
+      "status": "passed"
+    },
+    {
+      "name": "lint: copyright (disabled by package generator)",
+      "status": "skipped"
+    },
+    {
+      "name": "colcon test turtle_bringup + patrol: 13 tests, 0 errors, 0 failures, 2 skipped",
+      "status": "passed"
+    },
+    {
+      "name": "graph: minimal node /patrol appears in node list",
+      "status": "passed"
+    },
+    {
+      "name": "defect: without remap /patrol publishes /cmd_vel (1 publisher, 0 subscriptions); pose unchanged",
+      "status": "passed"
+    },
+    {
+      "name": "fix: with -r cmd_vel:=/turtle1/cmd_vel -> 1 publisher (patrol), 1 subscription (turtlesim); turtle moves",
+      "status": "passed"
+    },
+    {
+      "name": "rate: /turtle1/cmd_vel ~10.0 Hz over ~10 s (window 99)",
+      "status": "passed"
+    },
+    {
+      "name": "stop: after SIGINT patrol exits cleanly; turtle stops ~1.0 s later",
+      "status": "passed"
+    }
+  ],
+  "defect": {
+    "reproducer": "При запущенном turtlesim: `ros2 run patrol patrol` (без remap). `ros2 node info /patrol` -> Publishers: /cmd_vel; `ros2 topic info /cmd_vel --verbose` -> Publisher count: 1 (patrol), Subscription count: 0; у /turtle1/cmd_vel 0 издателей и подписчик turtlesim; в /cmd_vel идёт linear.x=0.5, angular.z=0.3, но поза остаётся (5.544, 5.544, 0.0).",
+    "root_cause": "Издатель создан с относительным именем `cmd_vel`, которое разрешается от пространства имён ноды: patrol в корне, поэтому получается /cmd_vel. Turtlesim подписан на /turtle1/cmd_vel. Имена разные, поэтому издатель и подписчик не соединяются, и команды никому не доставляются.",
+    "proof_after": "`ros2 run patrol patrol --ros-args -r cmd_vel:=/turtle1/cmd_vel` (код не менялся): node info -> Publishers: /turtle1/cmd_vel; topic info /turtle1/cmd_vel -> 1 publisher (patrol), 1 subscription (turtlesim); /cmd_vel исчез; поза linear_velocity 0.5, angular_velocity 0.3; `ros2 topic hz /turtle1/cmd_vel` ~9.999 Hz, окно 99, min 0.091 s, max 0.110 s. После Ctrl+C turtlesim останавливается через ~1.0 с."
+  },
+  "claims": {
+    "public_tests_passed": true,
+    "defect_reproduced": true,
+    "defect_fixed": true
+  },
+  "time": {
+    "contact_academic_hours": 2,
+    "self_study_hours": 1
+  },
+  "ai_used": true
+}

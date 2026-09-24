@@ -1,0 +1,11 @@
+stop patrol (SIGINT) at 12:12:58.560426179
+# /turtle1/pose linear_velocity around the stop (from ros2 topic echo --field, timestamps UTC):
+last  moving sample: 12:12:59.561779138 linear_velocity=0.5
+first stopped sample: 12:12:59.576150513 linear_velocity=0.0
+last sample in log:   12:13:01.765333958 linear_velocity=0.0
+samples after stop:      205
++ pgrep -x patrol
++ echo pgrep_exit=1
++ ros2 node list --no-daemon --spin-time 2
+pgrep_exit=1
+/turtlesim

@@ -1,0 +1,34 @@
++ cd src
++ ros2 pkg create --build-type ament_python --license Apache-2.0 --node-name patrol patrol --dependencies rclpy geometry_msgs
+going to create a new package
+package name: patrol
+destination directory: /home/ubuntu/robotics_ws/src
+package format: 3
+version: 0.0.0
+description: TODO: Package description
+maintainer: ['ubuntu <ubuntu@todo.todo>']
+licenses: ['Apache-2.0']
+build type: ament_python
+dependencies: ['rclpy', 'geometry_msgs']
+node_name: patrol
+creating folder ./patrol
+creating ./patrol/package.xml
+creating source folder
+creating folder ./patrol/patrol
+creating ./patrol/setup.py
+creating ./patrol/setup.cfg
+creating folder ./patrol/resource
+creating ./patrol/resource/patrol
+creating ./patrol/patrol/__init__.py
+creating ./patrol/patrol/py.typed
+creating folder ./patrol/test
+creating ./patrol/test/test_copyright.py
+creating ./patrol/test/test_flake8.py
+creating ./patrol/test/test_mypy.py
+creating ./patrol/test/test_pep257.py
+creating ./patrol/test/test_xmllint.py
+creating ./patrol/patrol/patrol.py
++ cd ..
++ ros2 topic type /turtle1/pose
++ ros2 pkg prefix turtlesim_msgs
+/opt/ros/lyrical

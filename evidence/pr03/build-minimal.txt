@@ -1,0 +1,4 @@
+Starting >>> patrol
+Finished <<< patrol [0.95s]
+
+Summary: 1 package finished [1.11s]

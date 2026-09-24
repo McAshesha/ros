@@ -1,0 +1,162 @@
++ colcon build --symlink-install --packages-select patrol
+Starting >>> patrol
+Finished <<< patrol [0.98s]
+
+Summary: 1 package finished [1.08s]
++ source install/setup.bash
+++ COLCON_CURRENT_PREFIX=/opt/ros/lyrical
+++ _colcon_prefix_chain_bash_source_script /opt/ros/lyrical/local_setup.bash
+++ '[' -f /opt/ros/lyrical/local_setup.bash ']'
+++ '[' -n '' ']'
+++ . /opt/ros/lyrical/local_setup.bash
++++ AMENT_SHELL=bash
++++++ dirname /opt/ros/lyrical/local_setup.bash
+++++ builtin cd /opt/ros/lyrical
+++++ pwd
++++ AMENT_CURRENT_PREFIX=/opt/ros/lyrical
++++ '[' -n '' ']'
++++ . /opt/ros/lyrical/local_setup.sh
+++++ _ament_prefix_sh_AMENT_CURRENT_PREFIX=/opt/ros/lyrical
+++++ '[' -z /opt/ros/lyrical ']'
+++++ _ament_prefix_sh_AMENT_CURRENT_PREFIX=/opt/ros/lyrical
+++++ : bash
+++++ _ament_python_executable=/usr/bin/python3
+++++ '[' -n '' ']'
+++++ '[' '!' -f /usr/bin/python3 ']'
+++++ _ament_additional_extension=
+++++ '[' bash '!=' sh ']'
+++++ _ament_additional_extension=bash
++++++ /usr/bin/python3 /opt/ros/lyrical/_local_setup_util.py sh bash
+++++ _ament_ordered_commands=$'AMENT_CURRENT_PREFIX="/opt/ros/lyrical" _ament_prefix_sh_source_script "/opt/ros/lyrical/share/ros2cli/environment/ros2-argcomplete.bash"\nAMENT_CURRENT_PREFIX="/opt/ros/lyrical" _ament_prefix_sh_source_script "/opt/ros/lyrical/share/ros_environment/environment/0.ros_distro_check.sh"\n# export ROS_AUTOMATIC_DISCOVERY_RANGE="SUBNET"\nexport ROS_DISTRO="lyrical"\nexport ROS_PYTHON_VERSION="3"\nexport ROS_VERSION="2"\nAMENT_CURRENT_PREFIX="/opt/ros/lyrical" _ament_prefix_sh_source_script "/opt/ros/lyrical/share/rosidl_cli/environment/rosidl-argcomplete.bash"'
+++++ unset _ament_additional_extension
+++++ unset _ament_python_executable
+++++ '[' -n '' ']'
+++++ eval $'AMENT_CURRENT_PREFIX="/opt/ros/lyrical" _ament_prefix_sh_source_script "/opt/ros/lyrical/share/ros2cli/environment/ros2-argcomplete.bash"\nAMENT_CURRENT_PREFIX="/opt/ros/lyrical" _ament_prefix_sh_source_script "/opt/ros/lyrical/share/ros_environment/environment/0.ros_distro_check.sh"\n# export ROS_AUTOMATIC_DISCOVERY_RANGE="SUBNET"\nexport ROS_DISTRO="lyrical"\nexport ROS_PYTHON_VERSION="3"\nexport ROS_VERSION="2"\nAMENT_CURRENT_PREFIX="/opt/ros/lyrical" _ament_prefix_sh_source_script "/opt/ros/lyrical/share/rosidl_cli/environment/rosidl-argcomplete.bash"'
++++++ AMENT_CURRENT_PREFIX=/opt/ros/lyrical
++++++ _ament_prefix_sh_source_script /opt/ros/lyrical/share/ros2cli/environment/ros2-argcomplete.bash
++++++ '[' -f /opt/ros/lyrical/share/ros2cli/environment/ros2-argcomplete.bash ']'
++++++ '[' -n '' ']'
++++++ . /opt/ros/lyrical/share/ros2cli/environment/ros2-argcomplete.bash
+++++++ type register-python-argcomplete3
+++++++ type register-python-argcomplete
++++++++ register-python-argcomplete ros2
+++++++ eval $'#compdef ros2\n# Run something, muting output or redirecting it to the debug stream\n# depending on the value of _ARC_DEBUG.\n# If ARGCOMPLETE_USE_TEMPFILES is set, use tempfiles for IPC.\n__python_argcomplete_run() {\n    if [[ -z "${ARGCOMPLETE_USE_TEMPFILES-}" ]]; then\n        __python_argcomplete_run_inner "$@"\n        return\n    fi\n    local tmpfile="$(mktemp)"\n    _ARGCOMPLETE_STDOUT_FILENAME="$tmpfile" __python_argcomplete_run_inner "$@"\n    local code=$?\n    cat "$tmpfile"\n    rm "$tmpfile"\n    return $code\n}\n\n__python_argcomplete_run_inner() {\n    if [[ -z "${_ARC_DEBUG-}" ]]; then\n        "$@" 8>&1 9>&2 1>/dev/null 2>&1 </dev/null\n    else\n        "$@" 8>&1 9>&2 1>&9 2>&1 </dev/null\n    fi\n}\n\n_python_argcomplete() {\n    local IFS=$\'\\013\'\n    local script=""\n    if [[ -n "${ZSH_VERSION-}" ]]; then\n        local completions\n        completions=($(IFS="$IFS" \\\n            COMP_LINE="$BUFFER" \\\n            COMP_POINT="$CURSOR" \\\n            _ARGCOMPLETE=1 \\\n            _ARGCOMPLETE_SHELL="zsh" \\\n            _ARGCOMPLETE_SUPPRESS_SPACE=1 \\\n            __python_argcomplete_run ${script:-${words[1]}}))\n        local nosort=()\n        local nospace=()\n        if is-at-least 5.8; then\n            nosort=(-o nosort)\n        fi\n        if [[ "${completions-}" =~ ([^\\\\\\\\]): && "${match[1]}" =~ [=/:] ]]; then\n            nospace=(-S \'\')\n        fi\n        _describe "${words[1]}" completions "${nosort[@]}" "${nospace[@]}"\n    else\n        local SUPPRESS_SPACE=0\n        if compopt +o nospace 2> /dev/null; then\n            SUPPRESS_SPACE=1\n        fi\n        COMPREPLY=($(IFS="$IFS" \\\n            COMP_LINE="$COMP_LINE" \\\n            COMP_POINT="$COMP_POINT" \\\n            COMP_TYPE="$COMP_TYPE" \\\n            _ARGCOMPLETE_COMP_WORDBREAKS="$COMP_WORDBREAKS" \\\n            _ARGCOMPLETE=1 \\\n            _ARGCOMPLETE_SHELL="bash" \\\n            _ARGCOMPLETE_SUPPRESS_SPACE=$SUPPRESS_SPACE \\\n            __python_argcomplete_run ${script:-$1}))\n        if [[ $? != 0 ]]; then\n            unset COMPREPLY\n        elif [[ $SUPPRESS_SPACE == 1 ]] && [[ "${COMPREPLY-}" =~ [=/:]$ ]]; then\n            compopt -o nospace\n        fi\n    fi\n}\nif [[ -z "${ZSH_VERSION-}" ]]; then\n    complete -o nospace -o default -o bashdefault -F _python_argcomplete ros2\nelse\n    # When called by the Zsh completion system, this will end with\n    # "loadautofunc" when initially autoloaded and "shfunc" later on, otherwise,\n    # the script was "eval"-ed so use "compdef" to register it with the\n    # completion system\n    autoload is-at-least\n    if [[ $zsh_eval_context == *func ]]; then\n        _python_argcomplete "$@"\n    else\n        compdef _python_argcomplete ros2\n    fi\nfi'
++++++++ [[ -z '' ]]
++++++++ complete -o nospace -o default -o bashdefault -F _python_argcomplete ros2
++++++ AMENT_CURRENT_PREFIX=/opt/ros/lyrical
++++++ _ament_prefix_sh_source_script /opt/ros/lyrical/share/ros_environment/environment/0.ros_distro_check.sh
++++++ '[' -f /opt/ros/lyrical/share/ros_environment/environment/0.ros_distro_check.sh ']'
++++++ '[' -n '' ']'
++++++ . /opt/ros/lyrical/share/ros_environment/environment/0.ros_distro_check.sh
+++++++ '[' -n lyrical -a lyrical '!=' lyrical ']'
++++++ export ROS_DISTRO=lyrical
++++++ ROS_DISTRO=lyrical
++++++ export ROS_PYTHON_VERSION=3
++++++ ROS_PYTHON_VERSION=3
++++++ export ROS_VERSION=2
++++++ ROS_VERSION=2
++++++ AMENT_CURRENT_PREFIX=/opt/ros/lyrical
++++++ _ament_prefix_sh_source_script /opt/ros/lyrical/share/rosidl_cli/environment/rosidl-argcomplete.bash
++++++ '[' -f /opt/ros/lyrical/share/rosidl_cli/environment/rosidl-argcomplete.bash ']'
++++++ '[' -n '' ']'
++++++ . /opt/ros/lyrical/share/rosidl_cli/environment/rosidl-argcomplete.bash
+++++++ type register-python-argcomplete3
+++++++ type register-python-argcomplete
++++++++ register-python-argcomplete rosidl
+++++++ eval $'#compdef rosidl\n# Run something, muting output or redirecting it to the debug stream\n# depending on the value of _ARC_DEBUG.\n# If ARGCOMPLETE_USE_TEMPFILES is set, use tempfiles for IPC.\n__python_argcomplete_run() {\n    if [[ -z "${ARGCOMPLETE_USE_TEMPFILES-}" ]]; then\n        __python_argcomplete_run_inner "$@"\n        return\n    fi\n    local tmpfile="$(mktemp)"\n    _ARGCOMPLETE_STDOUT_FILENAME="$tmpfile" __python_argcomplete_run_inner "$@"\n    local code=$?\n    cat "$tmpfile"\n    rm "$tmpfile"\n    return $code\n}\n\n__python_argcomplete_run_inner() {\n    if [[ -z "${_ARC_DEBUG-}" ]]; then\n        "$@" 8>&1 9>&2 1>/dev/null 2>&1 </dev/null\n    else\n        "$@" 8>&1 9>&2 1>&9 2>&1 </dev/null\n    fi\n}\n\n_python_argcomplete() {\n    local IFS=$\'\\013\'\n    local script=""\n    if [[ -n "${ZSH_VERSION-}" ]]; then\n        local completions\n        completions=($(IFS="$IFS" \\\n            COMP_LINE="$BUFFER" \\\n            COMP_POINT="$CURSOR" \\\n            _ARGCOMPLETE=1 \\\n            _ARGCOMPLETE_SHELL="zsh" \\\n            _ARGCOMPLETE_SUPPRESS_SPACE=1 \\\n            __python_argcomplete_run ${script:-${words[1]}}))\n        local nosort=()\n        local nospace=()\n        if is-at-least 5.8; then\n            nosort=(-o nosort)\n        fi\n        if [[ "${completions-}" =~ ([^\\\\\\\\]): && "${match[1]}" =~ [=/:] ]]; then\n            nospace=(-S \'\')\n        fi\n        _describe "${words[1]}" completions "${nosort[@]}" "${nospace[@]}"\n    else\n        local SUPPRESS_SPACE=0\n        if compopt +o nospace 2> /dev/null; then\n            SUPPRESS_SPACE=1\n        fi\n        COMPREPLY=($(IFS="$IFS" \\\n            COMP_LINE="$COMP_LINE" \\\n            COMP_POINT="$COMP_POINT" \\\n            COMP_TYPE="$COMP_TYPE" \\\n            _ARGCOMPLETE_COMP_WORDBREAKS="$COMP_WORDBREAKS" \\\n            _ARGCOMPLETE=1 \\\n            _ARGCOMPLETE_SHELL="bash" \\\n            _ARGCOMPLETE_SUPPRESS_SPACE=$SUPPRESS_SPACE \\\n            __python_argcomplete_run ${script:-$1}))\n        if [[ $? != 0 ]]; then\n            unset COMPREPLY\n        elif [[ $SUPPRESS_SPACE == 1 ]] && [[ "${COMPREPLY-}" =~ [=/:]$ ]]; then\n            compopt -o nospace\n        fi\n    fi\n}\nif [[ -z "${ZSH_VERSION-}" ]]; then\n    complete -o nospace -o default -o bashdefault -F _python_argcomplete rosidl\nelse\n    # When called by the Zsh completion system, this will end with\n    # "loadautofunc" when initially autoloaded and "shfunc" later on, otherwise,\n    # the script was "eval"-ed so use "compdef" to register it with the\n    # completion system\n    autoload is-at-least\n    if [[ $zsh_eval_context == *func ]]; then\n        _python_argcomplete "$@"\n    else\n        compdef _python_argcomplete rosidl\n    fi\nfi'
++++++++ [[ -z '' ]]
++++++++ complete -o nospace -o default -o bashdefault -F _python_argcomplete rosidl
+++++ unset _ament_ordered_commands
+++++ unset _ament_prefix_sh_source_script
+++++ unset _ament_prefix_sh_AMENT_CURRENT_PREFIX
+++++ dirname install/setup.bash
++++ builtin cd install
++++ pwd
+++ COLCON_CURRENT_PREFIX=/home/ubuntu/robotics_ws/install
+++ _colcon_prefix_chain_bash_source_script /home/ubuntu/robotics_ws/install/local_setup.bash
+++ '[' -f /home/ubuntu/robotics_ws/install/local_setup.bash ']'
+++ '[' -n '' ']'
+++ . /home/ubuntu/robotics_ws/install/local_setup.bash
++++ '[' -z /home/ubuntu/robotics_ws/install ']'
++++ _colcon_prefix_bash_COLCON_CURRENT_PREFIX=/home/ubuntu/robotics_ws/install
++++ _colcon_prefix_bash_prepend_unique_value COLCON_PREFIX_PATH /home/ubuntu/robotics_ws/install
++++ _listname=COLCON_PREFIX_PATH
++++ _value=/home/ubuntu/robotics_ws/install
++++ eval '_values="$COLCON_PREFIX_PATH"'
+++++ _values=
++++ _colcon_prefix_bash_prepend_unique_value_IFS=$' \t\n'
++++ IFS=:
++++ _all_values=/home/ubuntu/robotics_ws/install
++++ _contained_value=
++++ unset _item
++++ '[' -z '' ']'
++++ '[' -n '' ']'
++++ unset _contained_value
++++ IFS=$' \t\n'
++++ unset _colcon_prefix_bash_prepend_unique_value_IFS
++++ eval export 'COLCON_PREFIX_PATH="/home/ubuntu/robotics_ws/install"'
+++++ export COLCON_PREFIX_PATH=/home/ubuntu/robotics_ws/install
+++++ COLCON_PREFIX_PATH=/home/ubuntu/robotics_ws/install
++++ unset _all_values
++++ unset _values
++++ unset _value
++++ unset _listname
++++ unset _colcon_prefix_bash_prepend_unique_value
++++ '[' -n '' ']'
++++ _colcon_python_executable=/usr/bin/python3
++++ '[' '!' -f /usr/bin/python3 ']'
+++++ /usr/bin/python3 /home/ubuntu/robotics_ws/install/_local_setup_util_sh.py sh bash
++++ _colcon_ordered_commands=$'export PYTHONPATH="/home/ubuntu/robotics_ws/install/patrol/lib/python3.14/site-packages:$PYTHONPATH"\nexport AMENT_PREFIX_PATH="/home/ubuntu/robotics_ws/install/patrol:$AMENT_PREFIX_PATH"\nexport PYTHONPATH="/home/ubuntu/robotics_ws/build/patrol:$PYTHONPATH"\nexport PYTHONPATH="/home/ubuntu/robotics_ws/install/turtle_bringup/lib/python3.14/site-packages:$PYTHONPATH"\nexport AMENT_PREFIX_PATH="/home/ubuntu/robotics_ws/install/turtle_bringup:$AMENT_PREFIX_PATH"\nexport PYTHONPATH="/home/ubuntu/robotics_ws/build/turtle_bringup:$PYTHONPATH"'
++++ unset _colcon_python_executable
++++ '[' -n '' ']'
++++ eval $'export PYTHONPATH="/home/ubuntu/robotics_ws/install/patrol/lib/python3.14/site-packages:$PYTHONPATH"\nexport AMENT_PREFIX_PATH="/home/ubuntu/robotics_ws/install/patrol:$AMENT_PREFIX_PATH"\nexport PYTHONPATH="/home/ubuntu/robotics_ws/build/patrol:$PYTHONPATH"\nexport PYTHONPATH="/home/ubuntu/robotics_ws/install/turtle_bringup/lib/python3.14/site-packages:$PYTHONPATH"\nexport AMENT_PREFIX_PATH="/home/ubuntu/robotics_ws/install/turtle_bringup:$AMENT_PREFIX_PATH"\nexport PYTHONPATH="/home/ubuntu/robotics_ws/build/turtle_bringup:$PYTHONPATH"'
+++++ export PYTHONPATH=/home/ubuntu/robotics_ws/install/patrol/lib/python3.14/site-packages:/opt/ros/lyrical/opt/gz_sim_vendor/lib/python:/opt/ros/lyrical/opt/gz_transport_vendor/lib/python:/opt/ros/lyrical/opt/sdformat_vendor/lib/python:/opt/ros/lyrical/opt/gz_msgs_vendor/lib/python:/opt/ros/lyrical/opt/gz_math_vendor/lib/python:/opt/ros/lyrical/lib/python3.14/site-packages
+++++ PYTHONPATH=/home/ubuntu/robotics_ws/install/patrol/lib/python3.14/site-packages:/opt/ros/lyrical/opt/gz_sim_vendor/lib/python:/opt/ros/lyrical/opt/gz_transport_vendor/lib/python:/opt/ros/lyrical/opt/sdformat_vendor/lib/python:/opt/ros/lyrical/opt/gz_msgs_vendor/lib/python:/opt/ros/lyrical/opt/gz_math_vendor/lib/python:/opt/ros/lyrical/lib/python3.14/site-packages
+++++ export AMENT_PREFIX_PATH=/home/ubuntu/robotics_ws/install/patrol:/opt/ros/lyrical
+++++ AMENT_PREFIX_PATH=/home/ubuntu/robotics_ws/install/patrol:/opt/ros/lyrical
+++++ export PYTHONPATH=/home/ubuntu/robotics_ws/build/patrol:/home/ubuntu/robotics_ws/install/patrol/lib/python3.14/site-packages:/opt/ros/lyrical/opt/gz_sim_vendor/lib/python:/opt/ros/lyrical/opt/gz_transport_vendor/lib/python:/opt/ros/lyrical/opt/sdformat_vendor/lib/python:/opt/ros/lyrical/opt/gz_msgs_vendor/lib/python:/opt/ros/lyrical/opt/gz_math_vendor/lib/python:/opt/ros/lyrical/lib/python3.14/site-packages
+++++ PYTHONPATH=/home/ubuntu/robotics_ws/build/patrol:/home/ubuntu/robotics_ws/install/patrol/lib/python3.14/site-packages:/opt/ros/lyrical/opt/gz_sim_vendor/lib/python:/opt/ros/lyrical/opt/gz_transport_vendor/lib/python:/opt/ros/lyrical/opt/sdformat_vendor/lib/python:/opt/ros/lyrical/opt/gz_msgs_vendor/lib/python:/opt/ros/lyrical/opt/gz_math_vendor/lib/python:/opt/ros/lyrical/lib/python3.14/site-packages
+++++ export PYTHONPATH=/home/ubuntu/robotics_ws/install/turtle_bringup/lib/python3.14/site-packages:/home/ubuntu/robotics_ws/build/patrol:/home/ubuntu/robotics_ws/install/patrol/lib/python3.14/site-packages:/opt/ros/lyrical/opt/gz_sim_vendor/lib/python:/opt/ros/lyrical/opt/gz_transport_vendor/lib/python:/opt/ros/lyrical/opt/sdformat_vendor/lib/python:/opt/ros/lyrical/opt/gz_msgs_vendor/lib/python:/opt/ros/lyrical/opt/gz_math_vendor/lib/python:/opt/ros/lyrical/lib/python3.14/site-packages
+++++ PYTHONPATH=/home/ubuntu/robotics_ws/install/turtle_bringup/lib/python3.14/site-packages:/home/ubuntu/robotics_ws/build/patrol:/home/ubuntu/robotics_ws/install/patrol/lib/python3.14/site-packages:/opt/ros/lyrical/opt/gz_sim_vendor/lib/python:/opt/ros/lyrical/opt/gz_transport_vendor/lib/python:/opt/ros/lyrical/opt/sdformat_vendor/lib/python:/opt/ros/lyrical/opt/gz_msgs_vendor/lib/python:/opt/ros/lyrical/opt/gz_math_vendor/lib/python:/opt/ros/lyrical/lib/python3.14/site-packages
+++++ export AMENT_PREFIX_PATH=/home/ubuntu/robotics_ws/install/turtle_bringup:/home/ubuntu/robotics_ws/install/patrol:/opt/ros/lyrical
+++++ AMENT_PREFIX_PATH=/home/ubuntu/robotics_ws/install/turtle_bringup:/home/ubuntu/robotics_ws/install/patrol:/opt/ros/lyrical
+++++ export PYTHONPATH=/home/ubuntu/robotics_ws/build/turtle_bringup:/home/ubuntu/robotics_ws/install/turtle_bringup/lib/python3.14/site-packages:/home/ubuntu/robotics_ws/build/patrol:/home/ubuntu/robotics_ws/install/patrol/lib/python3.14/site-packages:/opt/ros/lyrical/opt/gz_sim_vendor/lib/python:/opt/ros/lyrical/opt/gz_transport_vendor/lib/python:/opt/ros/lyrical/opt/sdformat_vendor/lib/python:/opt/ros/lyrical/opt/gz_msgs_vendor/lib/python:/opt/ros/lyrical/opt/gz_math_vendor/lib/python:/opt/ros/lyrical/lib/python3.14/site-packages
+++++ PYTHONPATH=/home/ubuntu/robotics_ws/build/turtle_bringup:/home/ubuntu/robotics_ws/install/turtle_bringup/lib/python3.14/site-packages:/home/ubuntu/robotics_ws/build/patrol:/home/ubuntu/robotics_ws/install/patrol/lib/python3.14/site-packages:/opt/ros/lyrical/opt/gz_sim_vendor/lib/python:/opt/ros/lyrical/opt/gz_transport_vendor/lib/python:/opt/ros/lyrical/opt/sdformat_vendor/lib/python:/opt/ros/lyrical/opt/gz_msgs_vendor/lib/python:/opt/ros/lyrical/opt/gz_math_vendor/lib/python:/opt/ros/lyrical/lib/python3.14/site-packages
++++ unset _colcon_ordered_commands
++++ unset _colcon_prefix_sh_source_script
++++ unset _colcon_prefix_bash_COLCON_CURRENT_PREFIX
+++ unset COLCON_CURRENT_PREFIX
+++ unset _colcon_prefix_chain_bash_source_script
++ python3 -m pytest src/patrol/test -v -p no:cacheprovider
+============================= test session starts ==============================
+platform linux -- Python 3.14.4, pytest-9.0.2, pluggy-1.6.0 -- /usr/bin/python3
+rootdir: /home/ubuntu/robotics_ws/src/patrol
+plugins: ament_xmllint-0.20.6, ament_lint-0.20.6, ament_copyright-0.20.6, ament_pep257-0.20.6, ament_flake8-0.20.6, launch_testing-3.9.8, launch_testing_ros-0.29.9, ament_mypy-0.20.6, typeguard-4.4.4, cov-5.0.0, colcon-core-0.21.1
+collecting ... collected 8 items
+
+src/patrol/test/test_choose_command.py::test_no_pose_gives_zero_command PASSED [ 12%]
+src/patrol/test/test_choose_command.py::test_pose_gives_patrol_command PASSED [ 25%]
+src/patrol/test/test_choose_command.py::test_command_does_not_depend_on_pose_values PASSED [ 37%]
+src/patrol/test/test_copyright.py::test_copyright SKIPPED (No copyri...) [ 50%]
+src/patrol/test/test_flake8.py::test_flake8 PASSED                       [ 62%]
+src/patrol/test/test_mypy.py::test_mypy PASSED                           [ 75%]
+src/patrol/test/test_pep257.py::test_pep257 PASSED                       [ 87%]
+src/patrol/test/test_xmllint.py::test_xmllint PASSED                     [100%]
+
+======================== 7 passed, 1 skipped in 12.10s =========================
++ echo pytest_exit=0
+pytest_exit=0
++ colcon test --packages-select turtle_bringup patrol --event-handlers console_direct-
+Starting >>> patrol
+Starting >>> turtle_bringup
+Finished <<< turtle_bringup [13.3s]
+Finished <<< patrol [13.8s]
+
+Summary: 2 packages finished [14.0s]
++ echo colcon_test_exit=0
+colcon_test_exit=0
++ colcon test-result --verbose
+Summary: 13 tests, 0 errors, 0 failures, 2 skipped
++ echo test_result_exit=0
+test_result_exit=0
++ set +x
