@@ -71,7 +71,8 @@ class Patrol(Node):
         """Check the whole proposed set; must not change the node state."""
         proposed = {p.name: p.value for p in parameters}
         ok, reason = validate_values(
-            proposed.get('publish_hz', self.publish_hz),
+            # DEFECT (PR04): publish_hz check disabled, the proposed rate is not validated.
+            self.publish_hz,
             proposed.get('linear_speed', self.linear_speed),
             proposed.get('turn_rate', self.turn_rate),
         )
