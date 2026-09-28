@@ -57,3 +57,25 @@
   через `ros2 node info`, `ros2 topic info --verbose`, изменение позы и `ros2 topic hz`;
   CI повторяет сборку, тесты и `check_practice.py PR03`. Опыт повторён вручную, роли
   `init`/`spin`/callback и причину сбоя объясняю сам (`evidence/pr03/demo.md`).
+
+## PR04
+
+- Использован ИИ: да (`ai_used: true` в отчёте этой ПР).
+- Модель и версия: Claude Opus 5.5 (Anthropic).
+- Среда или интерфейс агента: Claude Code (CLI-агент в терминале macOS), команды ROS
+  выполнялись в Docker-контейнере `tiryoh/ros2-desktop-vnc:lyrical-20260906T0836`.
+- Затронутые компоненты: `src/patrol/patrol/patrol.py` (параметры, `validate_values`,
+  on-set и post-set callbacks, пересоздание таймера), `src/patrol/package.xml`
+  (`rcl_interfaces`), тесты `test_validate_values.py`, `test_parameters.py`,
+  `test_choose_command.py`, `README.md`, `.github/workflows/ci.yml` (kit `v1-w04`),
+  ветка `pr04-defect`, `evidence/pr04/*`.
+- Характер помощи: агент добавил параметры по схеме лекции 04 («сначала проверить, потом
+  применить»), написал тесты чистой функции и ноды, сделал ветку с отключённой проверкой
+  частоты, провёл опыт 10 → 5 Гц, отказ с 0 и повтор после исправления, вызвал `/clear` и
+  `rotate_absolute`, сохранил реальный вывод команд, написал `parameters.md` и отчёт.
+- Как результат был проверен независимо: `python3 -m pytest src/patrol/test` и
+  `colcon test` выполнены локально (`evidence/pr04/tests.txt`); на ветке с дефектом тот же
+  тест падает (`tests-broken.txt`); поведение подтверждено парами `ros2 param get` +
+  `ros2 topic hz`; CI повторяет сборку, тесты и `check_practice.py PR04`. Опыт повторяю
+  вручную на лабораторной и объясняю разницу проверки и применения сам
+  (`evidence/pr04/parameters.md`).

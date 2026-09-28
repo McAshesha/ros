@@ -1,0 +1,245 @@
+# commit 15041648f93b22d2f9c0ea222d4f103d23ecf61c (ветка pr04-defect)
+$ python3 -m pytest src/patrol/test/test_parameters.py -v -p no:cacheprovider
+============================= test session starts ==============================
+platform linux -- Python 3.14.4, pytest-9.0.2, pluggy-1.6.0 -- /usr/bin/python3
+rootdir: /home/ubuntu/robotics_ws/src/patrol
+plugins: ament_xmllint-0.20.6, ament_lint-0.20.6, ament_copyright-0.20.6, ament_pep257-0.20.6, ament_flake8-0.20.6, launch_testing-3.9.8, launch_testing_ros-0.29.9, ament_mypy-0.20.6, typeguard-4.4.4, cov-5.0.0, colcon-core-0.21.1
+collecting ... collected 7 items
+
+src/patrol/test/test_parameters.py::test_defaults PASSED                 [ 14%]
+src/patrol/test/test_parameters.py::test_rate_change_replaces_timer PASSED [ 28%]
+src/patrol/test/test_parameters.py::test_bad_rate_keeps_value_and_timer[0.0] FAILED [ 42%]
+src/patrol/test/test_parameters.py::test_bad_rate_keeps_value_and_timer[-1.0] FAILED [ 57%]
+src/patrol/test/test_parameters.py::test_bad_rate_keeps_value_and_timer[nan] FAILED [ 71%]
+src/patrol/test/test_parameters.py::test_speed_change_keeps_timer PASSED [ 85%]
+src/patrol/test/test_parameters.py::test_bad_set_is_rejected_as_a_whole FAILED [100%]
+
+=================================== FAILURES ===================================
+___________________ test_bad_rate_keeps_value_and_timer[0.0] ___________________
+
+node = <patrol.patrol.Patrol object at 0xffff798b47d0>, bad_hz = 0.0
+
+    @pytest.mark.parametrize('bad_hz', [0.0, -1.0, math.nan])
+    def test_bad_rate_keeps_value_and_timer(node, bad_hz):
+        assert set_hz(node, 5.0).successful
+        old_timer = node.timer
+>       result = set_hz(node, bad_hz)
+                 ^^^^^^^^^^^^^^^^^^^^
+
+src/patrol/test/test_parameters.py:42: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/patrol/test/test_parameters.py:19: in set_hz
+    return node.set_parameters_atomically([Parameter('publish_hz', value=value)])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/ros/lyrical/lib/python3.14/site-packages/rclpy/node.py:820: in set_parameters_atomically
+    return self._set_parameters_atomically(parameter_list)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/ros/lyrical/lib/python3.14/site-packages/rclpy/node.py:840: in _set_parameters_atomically
+    return self._set_parameters_atomically_common(parameter_list)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/ros/lyrical/lib/python3.14/site-packages/rclpy/node.py:944: in _set_parameters_atomically_common
+    self._call_post_set_parameters_callback(parameter_list)
+/opt/ros/lyrical/lib/python3.14/site-packages/rclpy/node.py:1038: in _call_post_set_parameters_callback
+    callback(parameter_list)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <patrol.patrol.Patrol object at 0xffff798b47d0>
+parameters = [<rclpy.parameter.Parameter object at 0xffff798d6330>]
+
+    def apply(self, parameters):
+        """Apply an accepted set: update fields, rebuild the timer on a new rate."""
+        old_hz = self.publish_hz
+        for parameter in parameters:
+            if parameter.name in PARAMETER_LIMITS:
+                setattr(self, parameter.name, parameter.value)
+        if self.publish_hz != old_hz:
+            self.timer.cancel()
+            self.destroy_timer(self.timer)
+>           self.timer = self.create_timer(1.0 / self.publish_hz, self.on_timer)
+                                           ^^^^^^^^^^^^^^^^^^^^^
+E           ZeroDivisionError: division by zero
+
+build/patrol/patrol/patrol.py:90: ZeroDivisionError
+----------------------------- Captured stderr call -----------------------------
+[INFO] [1790598678.472917583] [patrol]: publish_hz 10.0 -> 5.0, timer period 0.200 s
+__________________ test_bad_rate_keeps_value_and_timer[-1.0] ___________________
+
+node = <patrol.patrol.Patrol object at 0xffff7b92b750>, bad_hz = -1.0
+
+    @pytest.mark.parametrize('bad_hz', [0.0, -1.0, math.nan])
+    def test_bad_rate_keeps_value_and_timer(node, bad_hz):
+        assert set_hz(node, 5.0).successful
+        old_timer = node.timer
+>       result = set_hz(node, bad_hz)
+                 ^^^^^^^^^^^^^^^^^^^^
+
+src/patrol/test/test_parameters.py:42: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/patrol/test/test_parameters.py:19: in set_hz
+    return node.set_parameters_atomically([Parameter('publish_hz', value=value)])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/ros/lyrical/lib/python3.14/site-packages/rclpy/node.py:820: in set_parameters_atomically
+    return self._set_parameters_atomically(parameter_list)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/ros/lyrical/lib/python3.14/site-packages/rclpy/node.py:840: in _set_parameters_atomically
+    return self._set_parameters_atomically_common(parameter_list)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/ros/lyrical/lib/python3.14/site-packages/rclpy/node.py:944: in _set_parameters_atomically_common
+    self._call_post_set_parameters_callback(parameter_list)
+/opt/ros/lyrical/lib/python3.14/site-packages/rclpy/node.py:1038: in _call_post_set_parameters_callback
+    callback(parameter_list)
+build/patrol/patrol/patrol.py:90: in apply
+    self.timer = self.create_timer(1.0 / self.publish_hz, self.on_timer)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/ros/lyrical/lib/python3.14/site-packages/rclpy/node.py:2521: in create_timer
+    timer = Timer(
+/opt/ros/lyrical/lib/python3.14/site-packages/rclpy/timer.py:207: in __init__
+    super().__init__(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <rclpy.timer.Timer object at 0xffff7ba17790>
+callback = <bound method Patrol.on_timer of <patrol.patrol.Patrol object at 0xffff7b92b750>>
+timer_period_ns = -1000000000, clock = Clock(clock_type=ROS_TIME)
+
+    def __init__(
+        self,
+        callback: Optional[TimerCallbackUnion],
+        timer_period_ns: int,
+        clock: Clock,
+        *,
+        on_destroy: Optional[Callable[['BaseTimer'], None]] = None,
+        context: Optional[Context] = None,
+        autostart: bool = True
+    ) -> None:
+        """
+        Create a timer.
+    
+        .. warning:: Users should not create a timer with this constructor, instead they
+           should call :meth:`.Node.create_timer` or :meth:`.AsyncNode.create_timer`.
+        """
+        self._context = get_default_context() if context is None else context
+        self._clock = clock
+        if self._context.handle is None:
+            raise RuntimeError('Context must be initialized before create a _rclpy.Timer.')
+        with self._clock.handle, self._context.handle:
+>           self.__timer = _rclpy.Timer(
+                self._clock.handle, self._context.handle, timer_period_ns, autostart)
+E           rclpy._rclpy_pybind11.RCLError: failed to create timer: timer period must be non-negative, at ./src/rcl/timer.c:117
+
+/opt/ros/lyrical/lib/python3.14/site-packages/rclpy/timer.py:99: RCLError
+----------------------------- Captured stderr call -----------------------------
+[INFO] [1790598678.519573625] [patrol]: publish_hz 10.0 -> 5.0, timer period 0.200 s
+___________________ test_bad_rate_keeps_value_and_timer[nan] ___________________
+
+node = <patrol.patrol.Patrol object at 0xffff798b6490>, bad_hz = nan
+
+    @pytest.mark.parametrize('bad_hz', [0.0, -1.0, math.nan])
+    def test_bad_rate_keeps_value_and_timer(node, bad_hz):
+        assert set_hz(node, 5.0).successful
+        old_timer = node.timer
+>       result = set_hz(node, bad_hz)
+                 ^^^^^^^^^^^^^^^^^^^^
+
+src/patrol/test/test_parameters.py:42: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/patrol/test/test_parameters.py:19: in set_hz
+    return node.set_parameters_atomically([Parameter('publish_hz', value=value)])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/ros/lyrical/lib/python3.14/site-packages/rclpy/node.py:820: in set_parameters_atomically
+    return self._set_parameters_atomically(parameter_list)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/ros/lyrical/lib/python3.14/site-packages/rclpy/node.py:840: in _set_parameters_atomically
+    return self._set_parameters_atomically_common(parameter_list)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/ros/lyrical/lib/python3.14/site-packages/rclpy/node.py:944: in _set_parameters_atomically_common
+    self._call_post_set_parameters_callback(parameter_list)
+/opt/ros/lyrical/lib/python3.14/site-packages/rclpy/node.py:1038: in _call_post_set_parameters_callback
+    callback(parameter_list)
+build/patrol/patrol/patrol.py:90: in apply
+    self.timer = self.create_timer(1.0 / self.publish_hz, self.on_timer)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <patrol.patrol.Patrol object at 0xffff798b6490>, timer_period_sec = nan
+callback = <bound method Patrol.on_timer of <patrol.patrol.Patrol object at 0xffff798b6490>>
+callback_group = None, clock = None, autostart = True
+
+    def create_timer(
+        self,
+        timer_period_sec: float,
+        callback: Optional[TimerCallbackUnion],
+        callback_group: Optional[CallbackGroup] = None,
+        clock: Optional[Clock] = None,
+        autostart: bool = True,
+    ) -> Timer:
+        """
+        Create a new timer.
+    
+        If autostart is ``True`` (the default), the timer will be started and every
+        ``timer_period_sec`` number of seconds the provided callback function will be called.
+        If autostart is ``False``, the timer will be created but not started; it can then be
+        started by calling ``reset()`` on the timer object.
+    
+        :param timer_period_sec: The period (in seconds) of the timer.
+        :param callback: A user-defined callback function that is called when the timer expires.
+        :param callback_group: The callback group for the timer. If ``None``, then the
+            default callback group for the node is used.
+        :param clock: The clock which the timer gets time from.
+        :param autostart: Whether to automatically start the timer after creation; defaults to
+            ``True``.
+        """
+>       timer_period_nsec = int(float(timer_period_sec) * S_TO_NS)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: cannot convert float NaN to integer
+
+/opt/ros/lyrical/lib/python3.14/site-packages/rclpy/node.py:2516: ValueError
+----------------------------- Captured stderr call -----------------------------
+[INFO] [1790598678.576658750] [patrol]: publish_hz 10.0 -> 5.0, timer period 0.200 s
+_____________________ test_bad_set_is_rejected_as_a_whole ______________________
+
+node = <patrol.patrol.Patrol object at 0xffff798b7250>
+
+    def test_bad_set_is_rejected_as_a_whole(node):
+>       result = node.set_parameters_atomically([
+            Parameter('linear_speed', value=0.8),
+            Parameter('publish_hz', value=0.0),
+        ])
+
+src/patrol/test/test_parameters.py:64: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/opt/ros/lyrical/lib/python3.14/site-packages/rclpy/node.py:820: in set_parameters_atomically
+    return self._set_parameters_atomically(parameter_list)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/ros/lyrical/lib/python3.14/site-packages/rclpy/node.py:840: in _set_parameters_atomically
+    return self._set_parameters_atomically_common(parameter_list)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/ros/lyrical/lib/python3.14/site-packages/rclpy/node.py:944: in _set_parameters_atomically_common
+    self._call_post_set_parameters_callback(parameter_list)
+/opt/ros/lyrical/lib/python3.14/site-packages/rclpy/node.py:1038: in _call_post_set_parameters_callback
+    callback(parameter_list)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <patrol.patrol.Patrol object at 0xffff798b7250>
+parameters = [<rclpy.parameter.Parameter object at 0xffff701f7ef0>, <rclpy.parameter.Parameter object at 0xffff70238050>]
+
+    def apply(self, parameters):
+        """Apply an accepted set: update fields, rebuild the timer on a new rate."""
+        old_hz = self.publish_hz
+        for parameter in parameters:
+            if parameter.name in PARAMETER_LIMITS:
+                setattr(self, parameter.name, parameter.value)
+        if self.publish_hz != old_hz:
+            self.timer.cancel()
+            self.destroy_timer(self.timer)
+>           self.timer = self.create_timer(1.0 / self.publish_hz, self.on_timer)
+                                           ^^^^^^^^^^^^^^^^^^^^^
+E           ZeroDivisionError: division by zero
+
+build/patrol/patrol/patrol.py:90: ZeroDivisionError
+=========================== short test summary info ============================
+FAILED src/patrol/test/test_parameters.py::test_bad_rate_keeps_value_and_timer[0.0]
+FAILED src/patrol/test/test_parameters.py::test_bad_rate_keeps_value_and_timer[-1.0]
+FAILED src/patrol/test/test_parameters.py::test_bad_rate_keeps_value_and_timer[nan]
+FAILED src/patrol/test/test_parameters.py::test_bad_set_is_rejected_as_a_whole
+========================= 4 failed, 3 passed in 0.49s ==========================
+pytest_exit=1

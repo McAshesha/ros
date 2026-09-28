@@ -1,0 +1,681 @@
+# ROS_DOMAIN_ID=16; A: ros2 launch turtle_bringup sim.launch.py; patrol остановлен
++ ros2 service list -t
+/clear [std_srvs/srv/Empty]
+/kill [turtlesim_msgs/srv/Kill]
+/reset [std_srvs/srv/Empty]
+/spawn [turtlesim_msgs/srv/Spawn]
+/turtle1/set_pen [turtlesim_msgs/srv/SetPen]
+/turtle1/teleport_absolute [turtlesim_msgs/srv/TeleportAbsolute]
+/turtle1/teleport_relative [turtlesim_msgs/srv/TeleportRelative]
+/turtlesim/describe_parameters [rcl_interfaces/srv/DescribeParameters]
+/turtlesim/get_parameter_types [rcl_interfaces/srv/GetParameterTypes]
+/turtlesim/get_parameters [rcl_interfaces/srv/GetParameters]
+/turtlesim/get_type_description [type_description_interfaces/srv/GetTypeDescription]
+/turtlesim/list_parameters [rcl_interfaces/srv/ListParameters]
+/turtlesim/set_parameters [rcl_interfaces/srv/SetParameters]
+/turtlesim/set_parameters_atomically [rcl_interfaces/srv/SetParametersAtomically]
++ ros2 service type /clear
+std_srvs/srv/Empty
++ ros2 topic echo /turtle1/pose --once
+x: 8.212376594543457
+y: 8.022640228271484
+theta: 1.4976881742477417
+linear_velocity: 0.0
+angular_velocity: 0.0
+---
++ ros2 service call /clear std_srvs/srv/Empty '{}'
+waiting for service to become available...
+requester: making request: std_srvs.srv.Empty_Request()
+
+response:
+std_srvs.srv.Empty_Response()
+
++ ros2 topic echo /turtle1/pose --once
+x: 8.212376594543457
+y: 8.022640228271484
+theta: 1.4976881742477417
+linear_velocity: 0.0
+angular_velocity: 0.0
+---
++ ros2 action list -t
+/turtle1/rotate_absolute [turtlesim_msgs/action/RotateAbsolute]
++ ros2 action info /turtle1/rotate_absolute
+Action: /turtle1/rotate_absolute
+Action clients: 0
+Action servers: 1
+    /turtlesim
++ ros2 action send_goal /turtle1/rotate_absolute turtlesim_msgs/action/RotateAbsolute '{theta: 1.57}' --feedback
+Waiting for an action server to become available...
+Sending goal:
+     theta: 1.57
+
+Goal accepted with ID: 0b6e89af4f904bdbaa3b8143ae5c8f38
+
+Feedback:
+    remaining: 0.0723118782043457
+
+Feedback:
+    remaining: 0.056311845779418945
+
+Feedback:
+    remaining: 0.04031181335449219
+
+Feedback:
+    remaining: 0.02431190013885498
+
+Feedback:
+    remaining: 0.008311867713928223
+
+Result:
+    delta: -0.06400000303983688
+
+Goal finished with status: SUCCEEDED
++ ros2 topic echo /turtle1/pose --once
+x: 8.212376594543457
+y: 8.022640228271484
+theta: 1.5616881847381592
+linear_velocity: 0.0
+angular_velocity: 0.0
+---
++ ros2 action send_goal /turtle1/rotate_absolute turtlesim_msgs/action/RotateAbsolute '{theta: -1.57}' --feedback
+Waiting for an action server to become available...
+Sending goal:
+     theta: -1.57
+
+Goal accepted with ID: 3e548abdee2f48d08c25dc9e6ad84ede
+
+Feedback:
+    remaining: -3.131688117980957
+
+Feedback:
+    remaining: -3.1156883239746094
+
+Feedback:
+    remaining: -3.0996882915496826
+
+Feedback:
+    remaining: -3.083688259124756
+
+Feedback:
+    remaining: -3.067688226699829
+
+Feedback:
+    remaining: -3.0516881942749023
+
+Feedback:
+    remaining: -3.0356884002685547
+
+Feedback:
+    remaining: -3.019688129425049
+
+Feedback:
+    remaining: -3.003688335418701
+
+Feedback:
+    remaining: -2.9876883029937744
+
+Feedback:
+    remaining: -2.9716882705688477
+
+Feedback:
+    remaining: -2.955688238143921
+
+Feedback:
+    remaining: -2.939688205718994
+
+Feedback:
+    remaining: -2.9236884117126465
+
+Feedback:
+    remaining: -2.9076881408691406
+
+Feedback:
+    remaining: -2.891688346862793
+
+Feedback:
+    remaining: -2.875688076019287
+
+Feedback:
+    remaining: -2.8596882820129395
+
+Feedback:
+    remaining: -2.8436882495880127
+
+Feedback:
+    remaining: -2.827688217163086
+
+Feedback:
+    remaining: -2.8116884231567383
+
+Feedback:
+    remaining: -2.7956881523132324
+
+Feedback:
+    remaining: -2.7796883583068848
+
+Feedback:
+    remaining: -2.763688087463379
+
+Feedback:
+    remaining: -2.7476882934570312
+
+Feedback:
+    remaining: -2.7316882610321045
+
+Feedback:
+    remaining: -2.7156882286071777
+
+Feedback:
+    remaining: -2.699688196182251
+
+Feedback:
+    remaining: -2.683688163757324
+
+Feedback:
+    remaining: -2.6676883697509766
+
+Feedback:
+    remaining: -2.6516880989074707
+
+Feedback:
+    remaining: -2.635688304901123
+
+Feedback:
+    remaining: -2.6196882724761963
+
+Feedback:
+    remaining: -2.6036882400512695
+
+Feedback:
+    remaining: -2.5876882076263428
+
+Feedback:
+    remaining: -2.571688175201416
+
+Feedback:
+    remaining: -2.5556883811950684
+
+Feedback:
+    remaining: -2.5396881103515625
+
+Feedback:
+    remaining: -2.523688316345215
+
+Feedback:
+    remaining: -2.507688283920288
+
+Feedback:
+    remaining: -2.4916882514953613
+
+Feedback:
+    remaining: -2.4756882190704346
+
+Feedback:
+    remaining: -2.459688186645508
+
+Feedback:
+    remaining: -2.44368839263916
+
+Feedback:
+    remaining: -2.4276881217956543
+
+Feedback:
+    remaining: -2.4116883277893066
+
+Feedback:
+    remaining: -2.39568829536438
+
+Feedback:
+    remaining: -2.379688262939453
+
+Feedback:
+    remaining: -2.3636882305145264
+
+Feedback:
+    remaining: -2.3476881980895996
+
+Feedback:
+    remaining: -2.331688165664673
+
+Feedback:
+    remaining: -2.315688133239746
+
+Feedback:
+    remaining: -2.2996883392333984
+
+Feedback:
+    remaining: -2.2836883068084717
+
+Feedback:
+    remaining: -2.267688274383545
+
+Feedback:
+    remaining: -2.251688241958618
+
+Feedback:
+    remaining: -2.2356882095336914
+
+Feedback:
+    remaining: -2.2196881771087646
+
+Feedback:
+    remaining: -2.203688144683838
+
+Feedback:
+    remaining: -2.1876883506774902
+
+Feedback:
+    remaining: -2.1716883182525635
+
+Feedback:
+    remaining: -2.1556882858276367
+
+Feedback:
+    remaining: -2.13968825340271
+
+Feedback:
+    remaining: -2.123688220977783
+
+Feedback:
+    remaining: -2.1076881885528564
+
+Feedback:
+    remaining: -2.0916881561279297
+
+Feedback:
+    remaining: -2.075688362121582
+
+Feedback:
+    remaining: -2.0596883296966553
+
+Feedback:
+    remaining: -2.0436882972717285
+
+Feedback:
+    remaining: -2.0276882648468018
+
+Feedback:
+    remaining: -2.011688232421875
+
+Feedback:
+    remaining: -1.9956881999969482
+
+Feedback:
+    remaining: -1.979688286781311
+
+Feedback:
+    remaining: -1.9636882543563843
+
+Feedback:
+    remaining: -1.9476882219314575
+
+Feedback:
+    remaining: -1.9316883087158203
+
+Feedback:
+    remaining: -1.9156882762908936
+
+Feedback:
+    remaining: -1.8996882438659668
+
+Feedback:
+    remaining: -1.88368821144104
+
+Feedback:
+    remaining: -1.8676881790161133
+
+Feedback:
+    remaining: -1.851688265800476
+
+Feedback:
+    remaining: -1.8356882333755493
+
+Feedback:
+    remaining: -1.8196882009506226
+
+Feedback:
+    remaining: -1.8036882877349854
+
+Feedback:
+    remaining: -1.7876882553100586
+
+Feedback:
+    remaining: -1.7716882228851318
+
+Feedback:
+    remaining: -1.755688190460205
+
+Feedback:
+    remaining: -1.7396882772445679
+
+Feedback:
+    remaining: -1.7236882448196411
+
+Feedback:
+    remaining: -1.7076882123947144
+
+Feedback:
+    remaining: -1.6916882991790771
+
+Feedback:
+    remaining: -1.6756882667541504
+
+Feedback:
+    remaining: -1.6596882343292236
+
+Feedback:
+    remaining: -1.6436882019042969
+
+Feedback:
+    remaining: -1.6276882886886597
+
+Feedback:
+    remaining: -1.611688256263733
+
+Feedback:
+    remaining: -1.5956882238388062
+
+Feedback:
+    remaining: -1.579688310623169
+
+Feedback:
+    remaining: -1.5636882781982422
+
+Feedback:
+    remaining: -1.5476882457733154
+
+Feedback:
+    remaining: -1.5316882133483887
+
+Feedback:
+    remaining: -1.5156883001327515
+
+Feedback:
+    remaining: -1.4996882677078247
+
+Feedback:
+    remaining: -1.483688235282898
+
+Feedback:
+    remaining: -1.4676882028579712
+
+Feedback:
+    remaining: -1.451688289642334
+
+Feedback:
+    remaining: -1.4356882572174072
+
+Feedback:
+    remaining: -1.4196882247924805
+
+Feedback:
+    remaining: -1.4036881923675537
+
+Feedback:
+    remaining: -1.3876882791519165
+
+Feedback:
+    remaining: -1.3716882467269897
+
+Feedback:
+    remaining: -1.355688214302063
+
+Feedback:
+    remaining: -1.3396883010864258
+
+Feedback:
+    remaining: -1.323688268661499
+
+Feedback:
+    remaining: -1.3076882362365723
+
+Feedback:
+    remaining: -1.2916882038116455
+
+Feedback:
+    remaining: -1.2756882905960083
+
+Feedback:
+    remaining: -1.2596882581710815
+
+Feedback:
+    remaining: -1.2436882257461548
+
+Feedback:
+    remaining: -1.2276883125305176
+
+Feedback:
+    remaining: -1.2116882801055908
+
+Feedback:
+    remaining: -1.195688247680664
+
+Feedback:
+    remaining: -1.1796882152557373
+
+Feedback:
+    remaining: -1.1636881828308105
+
+Feedback:
+    remaining: -1.1476882696151733
+
+Feedback:
+    remaining: -1.1316882371902466
+
+Feedback:
+    remaining: -1.1156883239746094
+
+Feedback:
+    remaining: -1.0996882915496826
+
+Feedback:
+    remaining: -1.0836882591247559
+
+Feedback:
+    remaining: -1.067688226699829
+
+Feedback:
+    remaining: -1.0516881942749023
+
+Feedback:
+    remaining: -1.0356882810592651
+
+Feedback:
+    remaining: -1.0196882486343384
+
+Feedback:
+    remaining: -1.0036883354187012
+
+Feedback:
+    remaining: -0.9876882433891296
+
+Feedback:
+    remaining: -0.9716882705688477
+
+Feedback:
+    remaining: -0.9556882381439209
+
+Feedback:
+    remaining: -0.9396882653236389
+
+Feedback:
+    remaining: -0.9236882328987122
+
+Feedback:
+    remaining: -0.9076882600784302
+
+Feedback:
+    remaining: -0.8916882276535034
+
+Feedback:
+    remaining: -0.8756882548332214
+
+Feedback:
+    remaining: -0.8596882820129395
+
+Feedback:
+    remaining: -0.8436882495880127
+
+Feedback:
+    remaining: -0.8276882767677307
+
+Feedback:
+    remaining: -0.811688244342804
+
+Feedback:
+    remaining: -0.795688271522522
+
+Feedback:
+    remaining: -0.7796882390975952
+
+Feedback:
+    remaining: -0.7636882662773132
+
+Feedback:
+    remaining: -0.7476882338523865
+
+Feedback:
+    remaining: -0.7316882610321045
+
+Feedback:
+    remaining: -0.7156882286071777
+
+Feedback:
+    remaining: -0.6996882557868958
+
+Feedback:
+    remaining: -0.683688223361969
+
+Feedback:
+    remaining: -0.667688250541687
+
+Feedback:
+    remaining: -0.651688277721405
+
+Feedback:
+    remaining: -0.6356882452964783
+
+Feedback:
+    remaining: -0.6196882724761963
+
+Feedback:
+    remaining: -0.6036882400512695
+
+Feedback:
+    remaining: -0.5876882672309875
+
+Feedback:
+    remaining: -0.5716882348060608
+
+Feedback:
+    remaining: -0.5556882619857788
+
+Feedback:
+    remaining: -0.539688229560852
+
+Feedback:
+    remaining: -0.5236881971359253
+
+Feedback:
+    remaining: -0.5076882839202881
+
+Feedback:
+    remaining: -0.49168825149536133
+
+Feedback:
+    remaining: -0.47568821907043457
+
+Feedback:
+    remaining: -0.45968830585479736
+
+Feedback:
+    remaining: -0.4436882734298706
+
+Feedback:
+    remaining: -0.42768824100494385
+
+Feedback:
+    remaining: -0.4116882085800171
+
+Feedback:
+    remaining: -0.3956882953643799
+
+Feedback:
+    remaining: -0.3796882629394531
+
+Feedback:
+    remaining: -0.36368823051452637
+
+Feedback:
+    remaining: -0.3476881980895996
+
+Feedback:
+    remaining: -0.3316882848739624
+
+Feedback:
+    remaining: -0.31568825244903564
+
+Feedback:
+    remaining: -0.2996882200241089
+
+Feedback:
+    remaining: -0.2836883068084717
+
+Feedback:
+    remaining: -0.2676882743835449
+
+Feedback:
+    remaining: -0.25168824195861816
+
+Feedback:
+    remaining: -0.2356882095336914
+
+Feedback:
+    remaining: -0.2196882963180542
+
+Feedback:
+    remaining: -0.20368826389312744
+
+Feedback:
+    remaining: -0.18768823146820068
+
+Feedback:
+    remaining: -0.17168819904327393
+
+Feedback:
+    remaining: -0.15568828582763672
+
+Feedback:
+    remaining: -0.13968825340270996
+
+Feedback:
+    remaining: -0.1236882209777832
+
+Feedback:
+    remaining: -0.107688307762146
+
+Feedback:
+    remaining: -0.09168827533721924
+
+Feedback:
+    remaining: -0.07568824291229248
+
+Feedback:
+    remaining: -0.05968821048736572
+
+Feedback:
+    remaining: -0.043688297271728516
+
+Feedback:
+    remaining: -0.027688264846801758
+
+Feedback:
+    remaining: -0.011688232421875
+
+Result:
+    delta: 3.119999885559082
+
+Goal finished with status: SUCCEEDED
++ ros2 topic echo /turtle1/pose --once --field theta
+-1.5583118200302124
+---

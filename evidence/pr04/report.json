@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "practice_id": "PR04",
+  "commit": "335f4916c5b363851343c20094844ed1962b1569",
+  "course_kit": {
+    "version": "v1-w04",
+    "archive_sha256": "fec6b4e886c19146078bf69fbf90a19279a4cd33f656642395350b299efeb226"
+  },
+  "commands": [
+    "colcon build --symlink-install",
+    "python3 -m pytest src/patrol/test -v",
+    "colcon test --packages-select turtle_bringup patrol",
+    "colcon test-result --verbose",
+    "ros2 launch turtle_bringup sim.launch.py",
+    "ros2 run patrol patrol --ros-args -r cmd_vel:=/turtle1/cmd_vel",
+    "ros2 param list /patrol",
+    "ros2 param get /patrol publish_hz",
+    "timeout -s INT 11s ros2 topic hz /turtle1/cmd_vel",
+    "ros2 param set /patrol publish_hz 5.0",
+    "git switch pr04-defect",
+    "timeout -s INT 15s ros2 param set /patrol publish_hz 0.0",
+    "ros2 node list --no-daemon --spin-time 2",
+    "ros2 topic info /turtle1/cmd_vel",
+    "python3 -m pytest src/patrol/test/test_parameters.py -v",
+    "git switch main",
+    "ros2 param set /patrol publish_hz -1.0",
+    "ros2 param set /patrol publish_hz .nan",
+    "ros2 param set /patrol publish_hz 31.0",
+    "ros2 param set /patrol linear_speed 0.8",
+    "ros2 topic echo /turtle1/cmd_vel --once",
+    "ros2 service list -t",
+    "ros2 service call /clear std_srvs/srv/Empty '{}'",
+    "ros2 action list -t",
+    "ros2 action info /turtle1/rotate_absolute",
+    "ros2 action send_goal /turtle1/rotate_absolute turtlesim_msgs/action/RotateAbsolute '{theta: -1.57}' --feedback",
+    "python3 .course-kit/v1/tools/check_practice.py PR04 --submission ."
+  ],
+  "tests": [
+    {"name": "unit: validate_values accepts defaults and 10 -> 5 Hz", "status": "passed"},
+    {"name": "unit: validate_values rejects publish_hz 0, -1, NaN, inf, 0.5, 30.5; accepts 1 and 30", "status": "passed"},
+    {"name": "unit: validate_values rejects out-of-range/NaN/inf linear_speed and turn_rate, non-numbers", "status": "passed"},
+    {"name": "unit: choose_command uses given linear_speed and turn_rate", "status": "passed"},
+    {"name": "node: publish_hz 10 -> 5 replaces the timer (period 0.2 s, one timer left)", "status": "passed"},
+    {"name": "node: publish_hz 0, -1, NaN rejected; value 5.0 and timer object unchanged", "status": "passed"},
+    {"name": "node: speed change keeps timer; mixed set with publish_hz 0 rejected as a whole", "status": "passed"},
+    {"name": "lint: flake8, pep257, mypy, xmllint for patrol", "status": "passed"},
+    {"name": "lint: copyright (disabled by package generator)", "status": "skipped"},
+    {"name": "colcon test turtle_bringup + patrol: 38 tests, 0 errors, 0 failures, 2 skipped", "status": "passed"},
+    {"name": "live: 10.003 Hz -> param set 5.0 -> 5.000 Hz", "status": "passed"},
+    {"name": "defect branch pr04-defect: same node test 4 failed, 3 passed", "status": "passed"},
+    {"name": "live fix: publish_hz 0 rejected, stays 5.0, stream 4.998 Hz", "status": "passed"}
+  ],
+  "defect": {
+    "reproducer": "Ветка pr04-defect (коммит 15041648f93b22d2f9c0ea222d4f103d23ecf61c): в on-set callback вместо предложенной частоты проверяется текущая. При работающих turtlesim и patrol: `ros2 param set /patrol publish_hz 5.0` -> успешно, ~5 Гц; `timeout -s INT 15s ros2 param set /patrol publish_hz 0.0` -> ответа нет (exit 124); в логе patrol ZeroDivisionError: division by zero в apply (create_timer(1.0 / self.publish_hz)), процесс завершился; node list -> только /turtlesim; у /turtle1/cmd_vel 0 издателей, hz без сообщений, черепаха стоит. Тест test_parameters.py на ветке: 4 failed (0.0 -> ZeroDivisionError, -1.0 -> RCLError timer period must be non-negative, NaN -> ValueError), 3 passed.",
+    "root_cause": "Предложенная частота не проверялась до применения, поэтому 0 был принят и дошёл до post-set callback. Там старый таймер уже остановлен и удалён, а создание нового с периодом 1/0 бросает исключение; оно выходит из сервиса параметров в rclpy.spin и завершает ноду. Проверка должна отклонять набор в on-set callback, не меняя активного состояния.",
+    "proof_after": "main, коммит 335f4916c5b363851343c20094844ed1962b1569: после `ros2 param set /patrol publish_hz 5.0` запрос 0.0 -> `Setting parameter failed: publish_hz=0.0 is outside [1.0, 30.0]`; -1.0, .nan и 31.0 тоже отклонены; `ros2 param get` -> 5.0; /patrol в графе; `ros2 topic hz /turtle1/cmd_vel` -> 4.998 Гц, окно 49; 1 издатель и 1 подписчик. Тот же test_parameters.py проходит (32 passed, 1 skipped по всему пакету): значение 5.0 и объект таймера прежние."
+  },
+  "claims": {
+    "public_tests_passed": true,
+    "defect_reproduced": true,
+    "defect_fixed": true
+  },
+  "time": {
+    "contact_academic_hours": 2,
+    "self_study_hours": 1
+  },
+  "ai_used": true
+}

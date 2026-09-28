@@ -1,0 +1,74 @@
+# commit 335f4916c5b363851343c20094844ed1962b1569 (git rev-parse HEAD на хосте), ROS_DOMAIN_ID=16
+# A: ros2 launch turtle_bringup sim.launch.py
+# B: ros2 run patrol patrol --ros-args -r cmd_vel:=/turtle1/cmd_vel
++ ros2 node list --no-daemon --spin-time 2
+/patrol
+/turtlesim
++ ros2 param list /patrol
+  linear_speed
+  publish_hz
+  start_type_description_service
+  turn_rate
+  use_sim_time
++ ros2 param get /patrol linear_speed
+Double value is: 0.5
++ ros2 param get /patrol turn_rate
+Double value is: 0.3
++ ros2 param get /patrol publish_hz
+Double value is: 10.0
++ date -u +%T
+12:25:57
++ timeout -s INT 11s ros2 topic hz /turtle1/cmd_vel
+average rate: 10.035
+	min: 0.097s max: 0.102s std dev: 0.00129s window: 9
+average rate: 10.017
+	min: 0.095s max: 0.105s std dev: 0.00205s window: 19
+average rate: 10.010
+	min: 0.095s max: 0.105s std dev: 0.00193s window: 29
+average rate: 10.008
+	min: 0.095s max: 0.105s std dev: 0.00169s window: 39
+average rate: 10.007
+	min: 0.095s max: 0.105s std dev: 0.00161s window: 49
+average rate: 10.004
+	min: 0.095s max: 0.105s std dev: 0.00148s window: 59
+average rate: 10.003
+	min: 0.095s max: 0.105s std dev: 0.00140s window: 69
+average rate: 10.003
+	min: 0.095s max: 0.105s std dev: 0.00152s window: 79
+average rate: 10.003
+	min: 0.095s max: 0.105s std dev: 0.00174s window: 89
+average rate: 10.003
+	min: 0.095s max: 0.105s std dev: 0.00176s window: 99
+hz_exit=124
++ echo hz_exit=124
++ ros2 param set /patrol publish_hz 5.0
+Set parameter successful
++ ros2 param get /patrol publish_hz
+Double value is: 5.0
++ date -u +%T
+12:26:11
++ timeout -s INT 11s ros2 topic hz /turtle1/cmd_vel
+average rate: 5.017
+	min: 0.198s max: 0.201s std dev: 0.00092s window: 4
+average rate: 5.005
+	min: 0.197s max: 0.203s std dev: 0.00169s window: 9
+average rate: 5.004
+	min: 0.197s max: 0.204s std dev: 0.00192s window: 14
+average rate: 5.001
+	min: 0.196s max: 0.204s std dev: 0.00231s window: 19
+average rate: 5.002
+	min: 0.196s max: 0.204s std dev: 0.00207s window: 24
+average rate: 5.000
+	min: 0.196s max: 0.204s std dev: 0.00214s window: 29
+average rate: 5.002
+	min: 0.196s max: 0.205s std dev: 0.00234s window: 34
+average rate: 5.000
+	min: 0.196s max: 0.205s std dev: 0.00236s window: 39
+average rate: 5.002
+	min: 0.196s max: 0.205s std dev: 0.00229s window: 44
+average rate: 5.000
+	min: 0.196s max: 0.205s std dev: 0.00221s window: 49
+hz_exit=124
++ echo hz_exit=124
+--- patrol log:
+[INFO] [1790598369.940686635] [patrol]: publish_hz 10.0 -> 5.0, timer period 0.200 s

@@ -1,0 +1,86 @@
+# commit 15041648f93b22d2f9c0ea222d4f103d23ecf61c (ветка pr04-defect: проверка publish_hz отключена), ROS_DOMAIN_ID=16
+# A: ros2 launch turtle_bringup sim.launch.py (продолжает работать)
+# B: ros2 run patrol patrol --ros-args -r cmd_vel:=/turtle1/cmd_vel
++ ros2 param set /patrol publish_hz 5.0
+Set parameter successful
++ ros2 param get /patrol publish_hz
+Double value is: 5.0
++ timeout -s INT 6s ros2 topic hz /turtle1/cmd_vel
+average rate: 5.009
+	min: 0.198s max: 0.200s std dev: 0.00085s window: 4
+average rate: 5.003
+	min: 0.198s max: 0.204s std dev: 0.00185s window: 9
+average rate: 4.999
+	min: 0.196s max: 0.204s std dev: 0.00235s window: 14
+average rate: 5.001
+	min: 0.194s max: 0.206s std dev: 0.00292s window: 19
+average rate: 4.999
+	min: 0.194s max: 0.206s std dev: 0.00280s window: 24
++ echo hz_exit=124
++ date -u +%T.%3N
+hz_exit=124
+12:30:30.39805797
++ timeout -s INT 15s ros2 param set /patrol publish_hz 0.0
++ echo set_exit=124
++ ros2 node list --no-daemon --spin-time 2
+set_exit=124
+/turtlesim
++ timeout -s INT 6s ros2 topic hz /turtle1/cmd_vel
+hz_exit=124
++ echo hz_exit=124
++ ros2 topic info /turtle1/cmd_vel
+Type: geometry_msgs/msg/Twist
+Publisher count: 0
+Subscription count: 1
++ ros2 topic echo /turtle1/pose --once --field linear_velocity
+0.0
+---
+--- patrol log (stdout+stderr процесса B):
+[INFO] [1790598621.989981793] [patrol]: publish_hz 10.0 -> 5.0, timer period 0.200 s
+Traceback (most recent call last):
+  File "/home/ubuntu/robotics_ws/install/patrol/lib/patrol/patrol", line 33, in <module>
+    sys.exit(load_entry_point('patrol', 'console_scripts', 'patrol')())
+             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/home/ubuntu/robotics_ws/build/patrol/patrol/patrol.py", line 109, in main
+    rclpy.spin(node)
+    ~~~~~~~~~~^^^^^^
+  File "/opt/ros/lyrical/lib/python3.14/site-packages/rclpy/__init__.py", line 324, in spin
+    executor.spin_once()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "/opt/ros/lyrical/lib/python3.14/site-packages/rclpy/executors.py", line 1020, in spin_once
+    self._spin_once_impl(timeout_sec)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/opt/ros/lyrical/lib/python3.14/site-packages/rclpy/executors.py", line 1012, in _spin_once_impl
+    raise exception
+  File "/opt/ros/lyrical/lib/python3.14/site-packages/rclpy/task.py", line 343, in _execute_coroutine_step
+    result = coro.send(None)
+  File "/opt/ros/lyrical/lib/python3.14/site-packages/rclpy/executors.py", line 670, in handler
+    await call_coroutine()
+  File "/opt/ros/lyrical/lib/python3.14/site-packages/rclpy/executors.py", line 604, in _execute
+    response = await await_or_execute(srv.callback, request, srv.srv_type.Response())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/ros/lyrical/lib/python3.14/site-packages/rclpy/executors.py", line 139, in await_or_execute
+    return callback(*args)
+  File "/opt/ros/lyrical/lib/python3.14/site-packages/rclpy/parameter_service.py", line 142, in _set_parameters_callback
+    result = node.set_parameters_atomically([param])
+  File "/opt/ros/lyrical/lib/python3.14/site-packages/rclpy/node.py", line 820, in set_parameters_atomically
+    return self._set_parameters_atomically(parameter_list)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "/opt/ros/lyrical/lib/python3.14/site-packages/rclpy/node.py", line 840, in _set_parameters_atomically
+    return self._set_parameters_atomically_common(parameter_list)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "/opt/ros/lyrical/lib/python3.14/site-packages/rclpy/node.py", line 944, in _set_parameters_atomically_common
+    self._call_post_set_parameters_callback(parameter_list)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "/opt/ros/lyrical/lib/python3.14/site-packages/rclpy/node.py", line 1038, in _call_post_set_parameters_callback
+    callback(parameter_list)
+    ~~~~~~~~^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/robotics_ws/build/patrol/patrol/patrol.py", line 90, in apply
+    self.timer = self.create_timer(1.0 / self.publish_hz, self.on_timer)
+                                   ~~~~^~~~~~~~~~~~~~~~~
+ZeroDivisionError: division by zero
+[ros2run]: Process exited with failure 1
+--- проверка процесса (pgrep -af в команде выше находил сам bash -c, поэтому повторено с -x):
++ pgrep -x patrol
++ echo pgrep_exit=1
+pgrep_exit=1

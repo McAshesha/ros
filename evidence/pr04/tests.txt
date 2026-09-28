@@ -1,0 +1,53 @@
+# commit 335f4916c5b363851343c20094844ed1962b1569 (main)
+$ colcon build --symlink-install
+Finished <<< patrol [1.65s]
+
+Summary: 2 packages finished [1.81s]
+$ python3 -m pytest src/patrol/test -v -p no:cacheprovider
+============================= test session starts ==============================
+platform linux -- Python 3.14.4, pytest-9.0.2, pluggy-1.6.0 -- /usr/bin/python3
+rootdir: /home/ubuntu/robotics_ws/src/patrol
+plugins: ament_xmllint-0.20.6, ament_lint-0.20.6, ament_copyright-0.20.6, ament_pep257-0.20.6, ament_flake8-0.20.6, launch_testing-3.9.8, launch_testing_ros-0.29.9, ament_mypy-0.20.6, typeguard-4.4.4, cov-5.0.0, colcon-core-0.21.1
+collecting ... collected 33 items
+
+src/patrol/test/test_choose_command.py::test_no_pose_gives_zero_command PASSED [  3%]
+src/patrol/test/test_choose_command.py::test_pose_gives_patrol_command PASSED [  6%]
+src/patrol/test/test_choose_command.py::test_command_uses_given_speed_and_turn_rate PASSED [  9%]
+src/patrol/test/test_choose_command.py::test_command_does_not_depend_on_pose_values PASSED [ 12%]
+src/patrol/test/test_copyright.py::test_copyright SKIPPED (No copyri...) [ 15%]
+src/patrol/test/test_flake8.py::test_flake8 PASSED                       [ 18%]
+src/patrol/test/test_mypy.py::test_mypy PASSED                           [ 21%]
+src/patrol/test/test_parameters.py::test_defaults PASSED                 [ 24%]
+src/patrol/test/test_parameters.py::test_rate_change_replaces_timer PASSED [ 27%]
+src/patrol/test/test_parameters.py::test_bad_rate_keeps_value_and_timer[0.0] PASSED [ 30%]
+src/patrol/test/test_parameters.py::test_bad_rate_keeps_value_and_timer[-1.0] PASSED [ 33%]
+src/patrol/test/test_parameters.py::test_bad_rate_keeps_value_and_timer[nan] PASSED [ 36%]
+src/patrol/test/test_parameters.py::test_speed_change_keeps_timer PASSED [ 39%]
+src/patrol/test/test_parameters.py::test_bad_set_is_rejected_as_a_whole PASSED [ 42%]
+src/patrol/test/test_pep257.py::test_pep257 PASSED                       [ 45%]
+src/patrol/test/test_validate_values.py::test_defaults_are_valid PASSED  [ 48%]
+src/patrol/test/test_validate_values.py::test_rate_change_10_to_5_is_valid PASSED [ 51%]
+src/patrol/test/test_validate_values.py::test_bad_publish_hz_is_rejected[0.0] PASSED [ 54%]
+src/patrol/test/test_validate_values.py::test_bad_publish_hz_is_rejected[-1.0] PASSED [ 57%]
+src/patrol/test/test_validate_values.py::test_bad_publish_hz_is_rejected[nan] PASSED [ 60%]
+src/patrol/test/test_validate_values.py::test_bad_publish_hz_is_rejected[inf] PASSED [ 63%]
+src/patrol/test/test_validate_values.py::test_bad_publish_hz_is_rejected[0.5] PASSED [ 66%]
+src/patrol/test/test_validate_values.py::test_bad_publish_hz_is_rejected[30.5] PASSED [ 69%]
+src/patrol/test/test_validate_values.py::test_publish_hz_bounds_are_valid[1.0] PASSED [ 72%]
+src/patrol/test/test_validate_values.py::test_publish_hz_bounds_are_valid[30.0] PASSED [ 75%]
+src/patrol/test/test_validate_values.py::test_bad_linear_speed_is_rejected[-0.1] PASSED [ 78%]
+src/patrol/test/test_validate_values.py::test_bad_linear_speed_is_rejected[1.1] PASSED [ 81%]
+src/patrol/test/test_validate_values.py::test_bad_linear_speed_is_rejected[nan] PASSED [ 84%]
+src/patrol/test/test_validate_values.py::test_bad_turn_rate_is_rejected[-1.1] PASSED [ 87%]
+src/patrol/test/test_validate_values.py::test_bad_turn_rate_is_rejected[1.1] PASSED [ 90%]
+src/patrol/test/test_validate_values.py::test_bad_turn_rate_is_rejected[-inf] PASSED [ 93%]
+src/patrol/test/test_validate_values.py::test_non_number_is_rejected PASSED [ 96%]
+src/patrol/test/test_xmllint.py::test_xmllint PASSED                     [100%]
+
+======================== 32 passed, 1 skipped in 7.67s =========================
+pytest_exit=0
+$ colcon test --packages-select turtle_bringup patrol
+
+Summary: 2 packages finished [15.7s]
+$ colcon test-result --verbose
+Summary: 38 tests, 0 errors, 0 failures, 2 skipped
