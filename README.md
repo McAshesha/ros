@@ -14,10 +14,10 @@
 ## Course kit
 
 ```bash
-curl -fsSLO https://ros.lms.ci.nsu.ru/downloads/robotics-course-kit-v1-w03-7fbfd3e8161a.tar.gz
-curl -fsSLO https://ros.lms.ci.nsu.ru/downloads/robotics-course-kit-v1-w03-7fbfd3e8161a.tar.gz.sha256.txt
-sha256sum -c robotics-course-kit-v1-w03-7fbfd3e8161a.tar.gz.sha256.txt
-mkdir -p .course-kit && tar -xzf robotics-course-kit-v1-w03-7fbfd3e8161a.tar.gz -C .course-kit
+curl -fsSLO https://ros.lms.ci.nsu.ru/downloads/robotics-course-kit-v1-w04-fec6b4e886c1.tar.gz
+curl -fsSLO https://ros.lms.ci.nsu.ru/downloads/robotics-course-kit-v1-w04-fec6b4e886c1.tar.gz.sha256.txt
+sha256sum -c robotics-course-kit-v1-w04-fec6b4e886c1.tar.gz.sha256.txt
+mkdir -p .course-kit && tar -xzf robotics-course-kit-v1-w04-fec6b4e886c1.tar.gz -C .course-kit
 ```
 
 ## ПР01. Окружение и граф turtlesim
@@ -108,9 +108,29 @@ ros2 topic hz /turtle1/cmd_vel                                   # C: ~10 Гц
 python3 .course-kit/v1/tools/check_practice.py PR03 --submission .
 ```
 
+## ПР04. Параметры `patrol`
+
+Параметры `linear_speed` (0.5, допустимо 0–1 м/с), `turn_rate` (0.3, −1–1 рад/с) и
+`publish_hz` (10.0, 1–30 Гц). Набор значений проверяет чистая функция `validate_values`
+в on-set callback до изменения состояния. Post-set callback обновляет поля и при новой
+частоте останавливает и удаляет старый таймер, затем создаёт новый с периодом `1/publish_hz`.
+
+```bash
+python3 -m pytest src/patrol/test
+ros2 launch turtle_bringup sim.launch.py                         # A
+ros2 run patrol patrol --ros-args -r cmd_vel:=/turtle1/cmd_vel   # B
+ros2 param get /patrol publish_hz                                # C
+ros2 param set /patrol publish_hz 5.0                            # C: принято, ~5 Гц
+ros2 param set /patrol publish_hz 0.0                            # C: отклонено, остаётся 5.0
+ros2 topic hz /turtle1/cmd_vel
+python3 .course-kit/v1/tools/check_practice.py PR04 --submission .
+```
+
+Дефект (проверка частоты отключена) лежит в отдельной ветке `pr04-defect`.
+
 ## CI
 
 `.github/workflows/ci.yml` проверяет JSON среды ПР01. Затем ставит зависимости через
 `rosdep`, собирает все пакеты, проверяет установленный `sim.launch.py` и запускает
 `colcon test` и `pytest` пакета `patrol`. После этого скачивает зафиксированный course
-kit `v1-w03` и запускает checker текущей ПР. Живой опыт с GUI выполняется локально.
+kit `v1-w04` и запускает checker текущей ПР. Живой опыт с GUI выполняется локально.

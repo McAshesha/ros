@@ -23,6 +23,12 @@ def test_pose_gives_patrol_command():
     assert command.angular.y == 0.0
 
 
+def test_command_uses_given_speed_and_turn_rate():
+    command = choose_command(Pose(), linear_speed=0.8, turn_rate=-0.5)
+    assert command.linear.x == 0.8
+    assert command.angular.z == -0.5
+
+
 def test_command_does_not_depend_on_pose_values():
     first = choose_command(Pose(x=1.0, y=1.0, theta=3.0))
     second = choose_command(Pose(x=10.0, y=10.0, theta=-3.0))

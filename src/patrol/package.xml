@@ -3,12 +3,13 @@
 <package format="3">
   <name>patrol</name>
   <version>0.0.0</version>
-  <description>Timer node that publishes Twist from the latest turtle pose (PR03).</description>
+  <description>Timer node that publishes Twist from the latest turtle pose, with validated parameters (PR03-PR04).</description>
   <maintainer email="mcashesha@mail.ru">McAshesha</maintainer>
   <license>Apache-2.0</license>
 
   <depend>rclpy</depend>
   <depend>geometry_msgs</depend>
+  <depend>rcl_interfaces</depend>
   <depend>turtlesim_msgs</depend>
 
   <test_depend>ament_copyright</test_depend>
