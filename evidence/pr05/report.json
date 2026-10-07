@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "practice_id": "PR05",
+  "commit": "1176cdc3225081555f6ef73bac9e430082bfe45e",
+  "course_kit": {
+    "version": "v1-w05",
+    "archive_sha256": "bca214e3de6f90f9513049dfa0f36fee65ad834da502dc3f3f8fb443517b5197"
+  },
+  "commands": [
+    "colcon build --symlink-install",
+    "python3 -m pytest src/patrol/test -v -p no:cacheprovider",
+    "python3 -m pytest src/course_bringup/test -v -p no:cacheprovider",
+    "colcon test",
+    "colcon test-result --verbose",
+    "ros2 launch course_bringup patrol.launch.py --show-args",
+    "ros2 launch course_bringup patrol.launch.py namespace:=robot_a subscriber_reliability:=reliable record:=false",
+    "ros2 node list --no-daemon --spin-time 2",
+    "ros2 topic list -t",
+    "ros2 topic info /robot_a/sensor_pose --verbose",
+    "timeout -s INT 3s ros2 topic echo /robot_a/sensor_pose --qos-reliability reliable --once",
+    "ros2 launch course_bringup patrol.launch.py namespace:=robot_a subscriber_reliability:=best_effort record:=true bag_dir:=evidence/pr05/bag",
+    "timeout -s INT 3s ros2 topic echo /robot_a/sensor_pose --qos-reliability best_effort --once",
+    "timeout -s INT 6s ros2 topic hz /robot_a/sensor_pose",
+    "ros2 topic echo /turtle1/cmd_vel --once",
+    "ros2 bag info evidence/pr05/bag",
+    "cp evidence/pr05/bag/metadata.yaml evidence/pr05/bag-metadata.yaml",
+    "ros2 bag play evidence/pr05/bag --loop --qos-profile-overrides-path config/qos-overrides.yaml",
+    "ros2 run course_bringup pose_subscriber --ros-args -r __ns:=/robot_a -p reliability:=reliable",
+    "ros2 run course_bringup pose_subscriber --ros-args -r __ns:=/robot_a -p reliability:=best_effort",
+    "ros2 launch course_bringup patrol.launch.py namespace:=/robot_a subscriber_reliability:=best_effort record:=true bag_dir:=log/pr05-final-check",
+    "python3 .course-kit/v1/tools/check_practice.py PR05 --submission ."
+  ],
+  "tests": [
+    {"name": "patrol: 32 passed, 1 skipped; PR04 parameter behavior preserved", "status": "passed"},
+    {"name": "course_bringup: 10 passed, 1 skipped; QoS policies, relative names, invalid reliability, launch arguments and conditional recorder", "status": "passed"},
+    {"name": "colcon: 49 tests, 0 errors, 0 failures, 3 skipped", "status": "passed"},
+    {"name": "generated copyright tests disabled by ROS package generator", "status": "skipped"},
+    {"name": "live reliable: topic visible, BEST_EFFORT offered, RELIABLE requested; received=0 and echo exit=124", "status": "passed"},
+    {"name": "live best_effort: echo exit=0, subscriber received=1104, stream about 62.492 Hz", "status": "passed"},
+    {"name": "record=false: recorder absent; record=true: finalized MCAP contains one topic and 1120 messages", "status": "passed"},
+    {"name": "replay same bag, BEST_EFFORT override: reliable echo timeout, subscriber received=0", "status": "passed"},
+    {"name": "replay same bag: best_effort echo exit=0, subscriber received=853, no live relay", "status": "passed"},
+    {"name": "final launch accepts namespace with leading slash, records one correct topic and exits cleanly", "status": "passed"}
+  ],
+  "defect": {
+    "reproducer": "Launch с namespace:=robot_a subscriber_reliability:=reliable record:=false. /robot_a/sensor_pose виден; topic info показывает BEST_EFFORT у relay и RELIABLE у подписчика. Предупреждение incompatible QoS, policy RELIABILITY; отдельный подписчик received=0; reliable echo остановлен timeout, exit=124. На replay той же записи с best_effort override ровно один издатель rosbag2_player; reliable снова даёт received=0 и exit=124.",
+    "root_cause": "Подписчик требует reliable, а издатель предлагает best_effort. DDS обнаруживает обе конечные точки, но не соединяет несовместимые профили, поэтому наличие топика и совпадение типа не доказывают доставку. При replay override нужен, чтобы player предлагал исходный best_effort и не скрывал дефект.",
+    "proof_after": "Запуск subscriber_reliability:=best_effort даёт Pose (echo exit=0), счётчик отдельного подписчика растёт до 1104. В один MCAP записано 1120 сообщений /robot_a/sensor_pose за 18.062218911 с. Живые ноды остановлены; player с config/qos-overrides.yaml проигрывает тот же bag, best_effort подписчик получает сообщения (echo exit=0, received=853), reliable остаётся без сообщений. Логи до/после, metadata и bag сохранены; 49 тестов colcon без ошибок."
+  },
+  "claims": {
+    "public_tests_passed": true,
+    "defect_reproduced": true,
+    "defect_fixed": true,
+    "replay_verified": true
+  },
+  "time": {
+    "contact_academic_hours": 2,
+    "self_study_hours": 1
+  },
+  "ai_used": true
+}

@@ -79,3 +79,17 @@
   `ros2 topic hz`; CI повторяет сборку, тесты и `check_practice.py PR04`. Опыт повторяю
   вручную на лабораторной и объясняю разницу проверки и применения сам
   (`evidence/pr04/parameters.md`).
+
+## PR05
+
+- Использован ИИ: да (`ai_used: true`).
+- Модель и версия: gpt-6.1-sol[1m] (идентификатор текущей среды).
+- Среда: Claude Code, терминал macOS; ROS-команды выполнялись в Docker `ros2`.
+- Компоненты: `course_bringup` (launch, pose_relay, pose_subscriber и тесты),
+  относительный вход позы `patrol`, `config/qos-overrides.yaml`, README, CI и evidence.
+- Помощь: изучение ПР05 и лекции, реализация, сборка и тесты, реальный опыт
+  несовместимости reliable/best_effort, запись MCAP и replay того же bag, оформление.
+- Проверка: тесты и линтеры (49 тестов colcon, 0 ошибок, 3 skipped), реальные команды
+  topic info/echo/hz, счётчик отдельного подписчика и ros2 bag info. На живом потоке
+  и replay reliable даёт timeout, best_effort получает Pose. Логи сохранены в
+  `evidence/pr05/`; ручное повторение пользователем не заявляется.

@@ -1,0 +1,63 @@
++ timeout 3s ros2 topic echo /robot_a/sensor_pose --qos-reliability best_effort --once
+x: 7.187796592712402
+y: 6.958096027374268
+theta: 1.4160000085830688
+linear_velocity: 0.5
+angular_velocity: 0.30000001192092896
+---
++ echo echo_exit=0
+echo_exit=0
+[INFO] [launch]: All log files can be found below /home/ubuntu/.ros/log/2026-10-07-16-42-37-585387-99014441bed2-4358
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [turtlesim_node-1]: process started with pid [4390]
+[INFO] [patrol-2]: process started with pid [4391]
+[INFO] [pose_relay-3]: process started with pid [4392]
+[INFO] [pose_subscriber-4]: process started with pid [4393]
+[INFO] [ros2-5]: process started with pid [4394]
+[turtlesim_node-1] [INFO] [1791391357.671280174] [turtlesim]: Starting turtlesim with node name /turtlesim
+[turtlesim_node-1] [INFO] [1791391357.673652174] [turtlesim]: Spawning turtle [turtle1] at x=[5.544445], y=[5.544445], theta=[0.000000]
+[ros2-5] stdin is not a terminal device. Keyboard handling disabled.[INFO] [1791391358.401402300] [rosbag2_recorder]: Press SPACE for pausing/resuming
+[ros2-5] [INFO] [1791391358.401458800] [rosbag2_recorder]: Event publisher thread: Started
+[ros2-5] [INFO] [1791391358.411122300] [rosbag2_recorder]: Starting recording to 'log/pr05-final-check'
+[ros2-5] [WARN] [1791391358.411168425] [rosbag2_recorder]: No input serialization format specified, using default rmw serialization format: 'cdr'.
+[ros2-5] [INFO] [1791391358.419832175] [rosbag2_recorder]: Listening for topics...
+[ros2-5] [INFO] [1791391358.419864800] [rosbag2_recorder]: Recording...
+[ros2-5] [INFO] [1791391358.419889341] [rosbag2_recorder]: Topics discovery started.
+[ros2-5] [INFO] [1791391358.426529841] [rosbag2_recorder]: Overriding subscription profile for /robot_a/sensor_pose
+[ros2-5] [INFO] [1791391358.427691675] [rosbag2_recorder]: Subscribed to topic '/robot_a/sensor_pose'
+[ros2-5] [INFO] [1791391358.427703758] [rosbag2_recorder]: All requested topics are subscribed. Stopping discovery...
+[ros2-5] [INFO] [1791391358.427706716] [rosbag2_recorder]: Topics discovery stopped.
+[pose_subscriber-4] [INFO] [1791391359.031412216] [robot_a.pose_subscriber]: received=36
+[pose_subscriber-4] [INFO] [1791391360.014281342] [robot_a.pose_subscriber]: received=99
+[pose_subscriber-4] [INFO] [1791391361.014947134] [robot_a.pose_subscriber]: received=161
+[pose_subscriber-4] [INFO] [1791391362.014135801] [robot_a.pose_subscriber]: received=224
+[pose_subscriber-4] [INFO] [1791391363.016562593] [robot_a.pose_subscriber]: received=286
+[WARNING] [launch]: user interrupted with ctrl-c (SIGINT)
+[INFO] [ros2-5]: sending signal 'SIGINT' to process[ros2-5]
+[INFO] [pose_subscriber-4]: sending signal 'SIGINT' to process[pose_subscriber-4]
+[INFO] [pose_relay-3]: sending signal 'SIGINT' to process[pose_relay-3]
+[INFO] [patrol-2]: sending signal 'SIGINT' to process[patrol-2]
+[INFO] [turtlesim_node-1]: sending signal 'SIGINT' to process[turtlesim_node-1]
+[ros2-5] [INFO] [1791391363.604748344] [rosbag2_cpp]: Writing remaining messages from cache to the bag. It may take a while
+[turtlesim_node-1] [INFO] [1791391363.606502344] [rclcpp]: signal_handler(signum=2)
+[ros2-5] [INFO] [1791391363.608591677] [rosbag2_recorder]: Recording stopped
+[ros2-5] [INFO] [1791391363.610297802] [rosbag2_recorder]: Event publisher thread: Exited
+[INFO] [turtlesim_node-1]: process has finished cleanly [pid 4390]
+[INFO] [pose_relay-3]: process has finished cleanly [pid 4392]
+[INFO] [pose_subscriber-4]: process has finished cleanly [pid 4393]
+[INFO] [patrol-2]: process has finished cleanly [pid 4391]
+[INFO] [ros2-5]: process has finished cleanly [pid 4394]
+
+Files:             0_pr05-final-check_2026_10_07-16_42_38.mcap
+Bag size:          27.2 KiB
+Storage id:        mcap
+ROS Distro:        lyrical
+Duration:          5.043951044s
+Start:             Oct  7 2026 16:42:38.544950508 (1791391358.544950508)
+End:               Oct  7 2026 16:42:43.588901552 (1791391363.588901552)
+Messages:          323
+Topic information: Topic: /robot_a/sensor_pose | Type: turtlesim_msgs/msg/Pose | Count: 323 | Serialization Format: cdr
+Services:          0
+Service information: 
+Actions:           0
+Action information: 

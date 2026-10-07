@@ -1,0 +1,134 @@
++ ros2 node list --no-daemon --spin-time 2
+/robot_a/patrol
+/robot_a/pose_relay
+/robot_a/pose_subscriber
+/turtlesim
++ ros2 topic list -t
+/parameter_events [rcl_interfaces/msg/ParameterEvent]
+/robot_a/sensor_pose [turtlesim_msgs/msg/Pose]
+/rosout [rcl_interfaces/msg/Log]
+/turtle1/cmd_vel [geometry_msgs/msg/Twist]
+/turtle1/color_sensor [turtlesim_msgs/msg/Color]
+/turtle1/pose [turtlesim_msgs/msg/Pose]
++ ros2 topic info /robot_a/sensor_pose --verbose
+Type: turtlesim_msgs/msg/Pose
+
+Publisher count: 1
+
+Node name: pose_relay
+Node namespace: /robot_a
+Topic type: turtlesim_msgs/msg/Pose
+Topic type hash: RIHS01_37b07ace09a0ed2c5b774b1410dec972dfd1d292de5656ebc2b075ac646e09c8
+Endpoint type: PUBLISHER
+GID: 01.0f.eb.7d.aa.08.07.c4.00.00.00.00.00.00.13.03
+QoS profile:
+  Reliability: BEST_EFFORT
+  History (Depth): KEEP_LAST (10)
+  Durability: VOLATILE
+  Lifespan: Infinite
+  Deadline: Infinite
+  Liveliness: AUTOMATIC
+  Liveliness lease duration: Infinite
+
+Subscription count: 1
+
+Node name: pose_subscriber
+Node namespace: /robot_a
+Topic type: turtlesim_msgs/msg/Pose
+Topic type hash: RIHS01_37b07ace09a0ed2c5b774b1410dec972dfd1d292de5656ebc2b075ac646e09c8
+Endpoint type: SUBSCRIPTION
+GID: 01.0f.eb.7d.ab.08.06.8c.00.00.00.00.00.00.13.04
+QoS profile:
+  Reliability: RELIABLE
+  History (Depth): KEEP_LAST (10)
+  Durability: VOLATILE
+  Lifespan: Infinite
+  Deadline: Infinite
+  Liveliness: AUTOMATIC
+  Liveliness lease duration: Infinite
+
++ timeout -s INT 3s ros2 topic echo /robot_a/sensor_pose --qos-reliability reliable --once
+[WARN] [1791390952.641705542] [_ros2cli_2456]: New publisher discovered on topic '/robot_a/sensor_pose', offering incompatible QoS. No messages will be received from it. Last incompatible policy: RELIABILITY
++ echo reliable_echo_exit=124
++ pgrep -af '[r]os2 bag record'
+reliable_echo_exit=124
++ echo recorder_process_exit=1
+recorder_process_exit=1
+[INFO] [launch]: All log files can be found below /home/ubuntu/.ros/log/2026-10-07-16-35-41-824419-99014441bed2-2184
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [turtlesim_node-1]: process started with pid [2216]
+[INFO] [patrol-2]: process started with pid [2217]
+[INFO] [pose_relay-3]: process started with pid [2218]
+[INFO] [pose_subscriber-4]: process started with pid [2219]
+[turtlesim_node-1] [INFO] [1791390942.007601218] [turtlesim]: Starting turtlesim with node name /turtlesim
+[turtlesim_node-1] [INFO] [1791390942.025541593] [turtlesim]: Spawning turtle [turtle1] at x=[5.544445], y=[5.544445], theta=[0.000000]
+[pose_subscriber-4] [WARN] [1791390942.181760051] [robot_a.pose_subscriber]: New publisher discovered on topic 'sensor_pose', offering incompatible QoS. No messages will be received from it. Last incompatible policy: RELIABILITY
+[pose_relay-3] [WARN] [1791390942.280699426] [robot_a.pose_relay]: New subscription discovered on topic 'sensor_pose', requesting incompatible QoS. No messages will be sent to it. Last incompatible policy: RELIABILITY
+[pose_subscriber-4] [INFO] [1791390943.168896010] [robot_a.pose_subscriber]: received=0
+[pose_subscriber-4] [INFO] [1791390944.164345677] [robot_a.pose_subscriber]: received=0
+[pose_subscriber-4] [INFO] [1791390945.165144844] [robot_a.pose_subscriber]: received=0
+[pose_subscriber-4] [INFO] [1791390946.164397803] [robot_a.pose_subscriber]: received=0
+[pose_subscriber-4] [INFO] [1791390947.166235304] [robot_a.pose_subscriber]: received=0
+[pose_subscriber-4] [INFO] [1791390948.166722763] [robot_a.pose_subscriber]: received=0
+[pose_subscriber-4] [INFO] [1791390949.167166930] [robot_a.pose_subscriber]: received=0
+[pose_subscriber-4] [INFO] [1791390950.163294514] [robot_a.pose_subscriber]: received=0
+[pose_subscriber-4] [INFO] [1791390951.166682000] [robot_a.pose_subscriber]: received=0
+[pose_subscriber-4] [INFO] [1791390952.163909375] [robot_a.pose_subscriber]: received=0
+[pose_relay-3] [WARN] [1791390952.631257250] [robot_a.pose_relay]: New subscription discovered on topic 'sensor_pose', requesting incompatible QoS. No messages will be sent to it. Last incompatible policy: RELIABILITY
+[pose_subscriber-4] [INFO] [1791390953.164224542] [robot_a.pose_subscriber]: received=0
+[pose_subscriber-4] [INFO] [1791390954.174665626] [robot_a.pose_subscriber]: received=0
++ ros2 node list --no-daemon --spin-time 2
+/robot_a/pose_subscriber
+/rosbag2_player
++ ros2 topic info /robot_a/sensor_pose --verbose
+Type: turtlesim_msgs/msg/Pose
+
+Publisher count: 1
+
+Node name: rosbag2_player
+Node namespace: /
+Topic type: turtlesim_msgs/msg/Pose
+Topic type hash: RIHS01_37b07ace09a0ed2c5b774b1410dec972dfd1d292de5656ebc2b075ac646e09c8
+Endpoint type: PUBLISHER
+GID: 01.0f.eb.7d.39.0b.f3.4e.00.00.00.00.00.00.13.03
+QoS profile:
+  Reliability: BEST_EFFORT
+  History (Depth): KEEP_LAST (10)
+  Durability: VOLATILE
+  Lifespan: Infinite
+  Deadline: Infinite
+  Liveliness: AUTOMATIC
+  Liveliness lease duration: Infinite
+
+Subscription count: 1
+
+Node name: pose_subscriber
+Node namespace: /robot_a
+Topic type: turtlesim_msgs/msg/Pose
+Topic type hash: RIHS01_37b07ace09a0ed2c5b774b1410dec972dfd1d292de5656ebc2b075ac646e09c8
+Endpoint type: SUBSCRIPTION
+GID: 01.0f.eb.7d.79.0b.b8.dd.00.00.00.00.00.00.13.04
+QoS profile:
+  Reliability: RELIABLE
+  History (Depth): KEEP_LAST (10)
+  Durability: VOLATILE
+  Lifespan: Infinite
+  Deadline: Infinite
+  Liveliness: AUTOMATIC
+  Liveliness lease duration: Infinite
+
++ timeout -s INT 3s ros2 topic echo /robot_a/sensor_pose --qos-reliability reliable --once
+[WARN] [1791391018.355717253] [_ros2cli_3042]: New publisher discovered on topic '/robot_a/sensor_pose', offering incompatible QoS. No messages will be received from it. Last incompatible policy: RELIABILITY
++ echo replay_reliable_exit=124
+replay_reliable_exit=124
+[WARN] [1791391010.298388180] [robot_a.pose_subscriber]: New publisher discovered on topic 'sensor_pose', offering incompatible QoS. No messages will be received from it. Last incompatible policy: RELIABILITY
+[INFO] [1791391011.198213041] [robot_a.pose_subscriber]: received=0
+[INFO] [1791391012.197021667] [robot_a.pose_subscriber]: received=0
+[INFO] [1791391013.197558751] [robot_a.pose_subscriber]: received=0
+[INFO] [1791391014.195738543] [robot_a.pose_subscriber]: received=0
+[INFO] [1791391015.198539543] [robot_a.pose_subscriber]: received=0
+[INFO] [1791391016.196391335] [robot_a.pose_subscriber]: received=0
+[INFO] [1791391017.196440794] [robot_a.pose_subscriber]: received=0
+[INFO] [1791391018.195300836] [robot_a.pose_subscriber]: received=0
+[INFO] [1791391019.197573670] [robot_a.pose_subscriber]: received=0
+[INFO] [1791391020.195609129] [robot_a.pose_subscriber]: received=0
