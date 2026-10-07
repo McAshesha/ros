@@ -3,8 +3,8 @@ name: ROS checks
 on: [push, pull_request]
 
 env:
-  COURSE_KIT_URL: https://ros.lms.ci.nsu.ru/downloads/robotics-course-kit-v1-w04-fec6b4e886c1.tar.gz
-  COURSE_KIT_SHA256: fec6b4e886c19146078bf69fbf90a19279a4cd33f656642395350b299efeb226
+  COURSE_KIT_URL: https://ros.lms.ci.nsu.ru/downloads/robotics-course-kit-v1-w05-bca214e3de6f.tar.gz
+  COURSE_KIT_SHA256: bca214e3de6f90f9513049dfa0f36fee65ad834da502dc3f3f8fb443517b5197
 
 jobs:
   test:
@@ -32,6 +32,9 @@ jobs:
           colcon test --event-handlers console_direct+
           colcon test-result --verbose
           python3 -m pytest src/patrol/test -p no:cacheprovider
+          python3 -m pytest src/course_bringup/test -p no:cacheprovider
+          test -f "$(ros2 pkg prefix course_bringup)/share/course_bringup/launch/patrol.launch.py"
+          ros2 launch course_bringup patrol.launch.py --show-args
       - name: Download course kit
         shell: bash
         run: |
@@ -46,4 +49,4 @@ jobs:
         shell: bash
         run: |
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
-          python3 .course-kit/v1/tools/check_practice.py PR04 --submission .
+          python3 .course-kit/v1/tools/check_practice.py PR05 --submission .

@@ -60,7 +60,7 @@ class Patrol(Node):
 
         self.latest_pose = None
         self.pose_sub = self.create_subscription(
-            Pose, '/turtle1/pose', self.on_pose, 10,
+            Pose, 'turtle1/pose', self.on_pose, 10,
         )
         self.cmd_pub = self.create_publisher(Twist, 'cmd_vel', 10)
         self.timer = self.create_timer(1.0 / self.publish_hz, self.on_timer)

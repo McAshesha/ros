@@ -14,10 +14,10 @@
 ## Course kit
 
 ```bash
-curl -fsSLO https://ros.lms.ci.nsu.ru/downloads/robotics-course-kit-v1-w04-fec6b4e886c1.tar.gz
-curl -fsSLO https://ros.lms.ci.nsu.ru/downloads/robotics-course-kit-v1-w04-fec6b4e886c1.tar.gz.sha256.txt
-sha256sum -c robotics-course-kit-v1-w04-fec6b4e886c1.tar.gz.sha256.txt
-mkdir -p .course-kit && tar -xzf robotics-course-kit-v1-w04-fec6b4e886c1.tar.gz -C .course-kit
+curl -fsSLO https://ros.lms.ci.nsu.ru/downloads/robotics-course-kit-v1-w05-bca214e3de6f.tar.gz
+curl -fsSLO https://ros.lms.ci.nsu.ru/downloads/robotics-course-kit-v1-w05-bca214e3de6f.tar.gz.sha256.txt
+sha256sum -c robotics-course-kit-v1-w05-bca214e3de6f.tar.gz.sha256.txt
+mkdir -p .course-kit && tar -xzf robotics-course-kit-v1-w05-bca214e3de6f.tar.gz -C .course-kit
 ```
 
 ## ПР01. Окружение и граф turtlesim
@@ -128,9 +128,38 @@ python3 .course-kit/v1/tools/check_practice.py PR04 --submission .
 
 Дефект (проверка частоты отключена) лежит в отдельной ветке `pr04-defect`.
 
+## ПР05. Launch, QoS и replay
+
+`course_bringup` поднимает глобальный turtlesim и ноды `patrol`, `pose_relay`,
+`pose_subscriber` в выбранном namespace. `patrol` использует относительный вход
+`turtle1/pose` (в корне прежнее полное имя), launch переназначает его на `/turtle1/pose`,
+а выход `cmd_vel` — на `/turtle1/cmd_vel`. Relay публикует `sensor_pose` с best_effort.
+
+```bash
+# До: reliable несовместим с best_effort, сообщений нет.
+ros2 launch course_bringup patrol.launch.py namespace:=robot_a \
+  subscriber_reliability:=reliable record:=false
+# После остановки первого запуска: best_effort и запись одного потока в MCAP.
+# bag_dir должен быть новым, существующая запись не перезаписывается.
+ros2 launch course_bringup patrol.launch.py namespace:=robot_a \
+  subscriber_reliability:=best_effort record:=true bag_dir:=my_bag
+# Остановить launch через Ctrl+C, затем воспроизвести сохранённый bag:
+ros2 bag play evidence/pr05/bag --loop \
+  --qos-profile-overrides-path config/qos-overrides.yaml
+# В другом терминале сравнить reliable и best_effort:
+timeout 3s ros2 topic echo /robot_a/sensor_pose --qos-reliability reliable --once
+timeout 3s ros2 topic echo /robot_a/sensor_pose --qos-reliability best_effort --once
+```
+
+Аргументы: `namespace`, `record`, `bag_dir`, `subscriber_reliability`.
+При `record=false` recorder не запускается (`IfCondition`). Override для replay закреплён
+за `/robot_a/sensor_pose`; для другого namespace нужно изменить ключ в YAML.
+Реальные логи и единственная запись: `evidence/pr05/`, разбор — `demo.md`.
+
 ## CI
 
-`.github/workflows/ci.yml` проверяет JSON среды ПР01. Затем ставит зависимости через
-`rosdep`, собирает все пакеты, проверяет установленный `sim.launch.py` и запускает
-`colcon test` и `pytest` пакета `patrol`. После этого скачивает зафиксированный course
-kit `v1-w04` и запускает checker текущей ПР. Живой опыт с GUI выполняется локально.
+`.github/workflows/ci.yml` проверяет JSON среды ПР01, ставит зависимости через
+`rosdep`, собирает все пакеты, проверяет установленные launch-файлы, запускает
+`colcon test` и отдельный `pytest` для `patrol` и `course_bringup`. После этого скачивает
+зафиксированный course kit `v1-w05` и запускает checker PR05. Живой опыт с GUI и replay
+выполняется локально.
