@@ -1,0 +1,53 @@
++ xacro src/course_description/urdf/vehicle.urdf.xacro
++ check_urdf log/vehicle-broken.urdf
+robot name is: course_ackermann
+---------- Successfully Parsed XML ---------------
+root Link: base_link has 6 child(ren)
+    child(1):  camera_link
+        child(1):  lidar_link
+    child(2):  front_left_knuckle_link
+        child(1):  front_left_wheel_link
+    child(3):  front_right_knuckle_link
+        child(1):  front_right_wheel_link
+    child(4):  imu_link
+    child(5):  rear_left_wheel_link
+    child(6):  rear_right_wheel_link
+check_urdf_exit=0
++ echo check_urdf_exit=0
++ python3 -m pytest src/course_description/test/test_model.py -v -p no:cacheprovider
+============================= test session starts ==============================
+platform linux -- Python 3.14.4, pytest-9.0.2, pluggy-1.6.0 -- /usr/bin/python3
+rootdir: /home/ubuntu/robotics_ws/src/course_description
+plugins: ament_xmllint-0.20.6, ament_lint-0.20.6, ament_copyright-0.20.6, ament_pep257-0.20.6, ament_flake8-0.20.6, launch_testing-3.9.8, launch_testing_ros-0.29.9, ament_mypy-0.20.6, typeguard-4.4.4, cov-5.0.0, colcon-core-0.21.1
+collecting ... collected 8 items
+
+src/course_description/test/test_model.py::test_tree_is_connected_and_acyclic PASSED [ 12%]
+src/course_description/test/test_model.py::test_sensor_parent_and_offset[camera_link] PASSED [ 25%]
+src/course_description/test/test_model.py::test_sensor_parent_and_offset[lidar_link] FAILED [ 37%]
+src/course_description/test/test_model.py::test_sensor_parent_and_offset[imu_link] PASSED [ 50%]
+src/course_description/test/test_model.py::test_geometry_is_parameterized[0.8-0.62-0.12] PASSED [ 62%]
+src/course_description/test/test_model.py::test_geometry_is_parameterized[1.0-0.8-0.15] PASSED [ 75%]
+src/course_description/test/test_model.py::test_geometry_mass_and_inertia_are_physical PASSED [ 87%]
+src/course_description/test/test_model.py::test_check_urdf_accepts_model PASSED [100%]
+
+=================================== FAILURES ===================================
+__________________ test_sensor_parent_and_offset[lidar_link] ___________________
+
+sensor = 'lidar_link'
+
+    @pytest.mark.parametrize('sensor', ['camera_link', 'lidar_link', 'imu_link'])
+    def test_sensor_parent_and_offset(sensor):
+        joint = joint_for(expand(), sensor)
+        assert joint.get('type') == 'fixed'
+>       assert joint.find('parent').get('link') == 'base_link'
+E       AssertionError: assert 'camera_link' == 'base_link'
+E         
+E         - base_link
+E         + camera_link
+
+src/course_description/test/test_model.py:48: AssertionError
+=========================== short test summary info ============================
+FAILED src/course_description/test/test_model.py::test_sensor_parent_and_offset[lidar_link]
+========================= 1 failed, 7 passed in 0.84s ==========================
+pytest_exit=1
++ echo pytest_exit=1

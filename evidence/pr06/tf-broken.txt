@@ -1,0 +1,43 @@
++ timeout -s INT 4s ros2 run tf2_ros tf2_echo base_link lidar_link
+[INFO] [1791819405.199763178] [tf2_echo]: Waiting for transform base_link ->  lidar_link: Invalid frame ID "base_link" passed to canTransform argument target_frame - frame does not exist
+At time 0.0
+- Translation: [0.560, 0.000, 0.760]
+- Rotation: in Quaternion (xyzw) [0.000, 0.000, 0.000, 1.000]
+- Rotation: in RPY (radian) [0.000, -0.000, 0.000]
+- Rotation: in RPY (degree) [0.000, -0.000, 0.000]
+- Matrix:
+  1.000  0.000  0.000  0.560
+  0.000  1.000  0.000  0.000
+  0.000  0.000  1.000  0.760
+  0.000  0.000  0.000  1.000
+At time 0.0
+- Translation: [0.560, 0.000, 0.760]
+- Rotation: in Quaternion (xyzw) [0.000, 0.000, 0.000, 1.000]
+- Rotation: in RPY (radian) [0.000, -0.000, 0.000]
+- Rotation: in RPY (degree) [0.000, -0.000, 0.000]
+- Matrix:
+  1.000  0.000  0.000  0.560
+  0.000  1.000  0.000  0.000
+  0.000  0.000  1.000  0.760
+  0.000  0.000  0.000  1.000
+At time 0.0
+- Translation: [0.560, 0.000, 0.760]
+- Rotation: in Quaternion (xyzw) [0.000, 0.000, 0.000, 1.000]
+- Rotation: in RPY (radian) [0.000, -0.000, 0.000]
+- Rotation: in RPY (degree) [0.000, -0.000, 0.000]
+- Matrix:
+  1.000  0.000  0.000  0.560
+  0.000  1.000  0.000  0.000
+  0.000  0.000  1.000  0.760
+  0.000  0.000  0.000  1.000
+[INFO] [1791819408.890048972] [rclcpp]: signal_handler(signum=2)
+[ros2run]: Received signal:  Interrupt
+[INFO] [1791819408.893627930] [rclcpp]: signal_handler(signum=2)
++ echo echo_exit=124
++ cd evidence/pr06
+echo_exit=124
++ ros2 run tf2_tools view_frames
+[INFO] [1791819409.823865000] [view_frames]: Listening to tf data for 5.0 seconds...
+[INFO] [1791819414.844337210] [view_frames]: Generating graph...
+[INFO] [1791819414.850421127] [view_frames]: Result:tf2_msgs.srv.FrameGraph_Response(frame_yaml="camera_link: \n  parent: 'base_link'\n  broadcaster: 'default_authority'\n  rate: 10000.000\n  most_recent_transform: 0.000000\n  oldest_transform: 0.000000\n  buffer_length: 0.000\nimu_link: \n  parent: 'base_link'\n  broadcaster: 'default_authority'\n  rate: 10000.000\n  most_recent_transform: 0.000000\n  oldest_transform: 0.000000\n  buffer_length: 0.000\nlidar_link: \n  parent: 'camera_link'\n  broadcaster: 'default_authority'\n  rate: 10000.000\n  most_recent_transform: 0.000000\n  oldest_transform: 0.000000\n  buffer_length: 0.000\n")
+[INFO] [1791819414.853246169] [view_frames]: Exporting graph in frames_2026-10-12_15.36.54.pdf file...

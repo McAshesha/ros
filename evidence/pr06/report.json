@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "practice_id": "PR06",
+  "commit": "cd5fd1c979aa4bc32e7404dbc8f2f94af2303658",
+  "course_kit": {
+    "version": "v1-w06",
+    "archive_sha256": "6eda53e1c566f7f0a7e09d7afe1e5a6f3b98397175a7e57dede9a84c6d14d0fe"
+  },
+  "commands": [
+    "colcon build --symlink-install",
+    "xacro src/course_description/urdf/vehicle.urdf.xacro > log/vehicle.urdf",
+    "check_urdf log/vehicle.urdf",
+    "python3 -m pytest src/course_description/test -v -p no:cacheprovider",
+    "colcon test",
+    "colcon test-result --verbose",
+    "ros2 launch course_description display.launch.py",
+    "ros2 topic pub -r 10 /joint_states sensor_msgs/msg/JointState '{header: auto, name: [front_left_steering_joint, front_right_steering_joint, front_left_wheel_joint, front_right_wheel_joint, rear_left_wheel_joint, rear_right_wheel_joint], position: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]}'",
+    "ros2 topic info /tf_static --verbose",
+    "timeout 4s ros2 topic echo /tf_static --once --qos-durability transient_local --qos-reliability reliable",
+    "timeout 4s ros2 topic echo /tf_static --once --qos-durability volatile --qos-reliability reliable",
+    "ros2 topic info /tf --verbose",
+    "timeout -s INT 4s ros2 run tf2_ros tf2_echo base_link lidar_link",
+    "ros2 run tf2_tools view_frames",
+    "git switch pr06-defect",
+    "python3 -m pytest src/course_description/test/test_model.py -v -p no:cacheprovider",
+    "ros2 launch course_description display.launch.py rviz:=false",
+    "git switch main",
+    "ros2 node list --no-daemon --spin-time 2",
+    "python3 .course-kit/v1/tools/check_practice.py PR06 --submission ."
+  ],
+  "tests": [
+    {"name": "connected acyclic URDF tree with sole root base_link", "status": "passed"},
+    {"name": "camera/lidar/IMU fixed to base_link with expected offset (0.28, 0, 0.38)", "status": "passed"},
+    {"name": "wheelbase, track and radius change geometry and wheel inertia", "status": "passed"},
+    {"name": "positive finite geometry and masses, physical diagonal inertias, total mass 15.7 kg", "status": "passed"},
+    {"name": "check_urdf accepts expanded model; course_description 12 passed, 1 skipped", "status": "passed"},
+    {"name": "colcon all packages: 62 tests, 0 errors, 0 failures, 4 skipped", "status": "passed"},
+    {"name": "generated copyright tests disabled by package generator", "status": "skipped"},
+    {"name": "RViz displays model, Fixed Frame base_link, Global Status Ok; screenshot saved", "status": "passed"},
+    {"name": "late reliable/transient_local echo receives tf_static (exit=0); reliable/volatile times out (exit=124), same publisher GID", "status": "passed"},
+    {"name": "defect parent camera_link: parent test fails and base->lidar is (0.56, 0, 0.76), while check_urdf exit=0", "status": "passed"},
+    {"name": "fixed parent base_link: same model tests 8 passed; tf offset restored to (0.28, 0, 0.38)", "status": "passed"}
+  ],
+  "defect": {
+    "reproducer": "Ветка pr06-defect, коммит 33b86c86eac598216b89ce830dd23d4b88f79d29: parent lidar_joint изменён с base_link на camera_link, offset (0.28, 0, 0.38) сохранён. check_urdf exit=0, но test_sensor_parent_and_offset[lidar_link] падает (1 failed, 7 passed). Живой tf2_echo base_link lidar_link -> [0.560, 0.000, 0.760].",
+    "root_cause": "Origin joint задан относительно parent. Смена parent на уже смещённую camera_link без пересчёта offset складывает два смещения, уводя lidar в неверную позицию. Дерево остаётся связным и ацикличным, поэтому структурный check_urdf не знает, что сенсор смонтирован не там; нужен контракт expected parent и проверка численного tf.",
+    "proof_after": "После остановки прежнего launch и git switch main тот же launch и tf2_echo дают [0.280, 0.000, 0.380]. Тот же test_model.py -> 8 passed, check_urdf exit=0. Полные тесты нового пакета 12 passed, 1 skipped; colcon по четырём пакетам 62 tests без ошибок. Исправное и дефектное view_frames сохранены; в frames.md таблица всех связей с единственным владельцем robot_state_publisher."
+  },
+  "claims": {
+    "public_tests_passed": true,
+    "defect_reproduced": true,
+    "defect_fixed": true
+  },
+  "time": {
+    "contact_academic_hours": 2,
+    "self_study_hours": 1
+  },
+  "ai_used": true
+}

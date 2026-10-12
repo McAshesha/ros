@@ -93,3 +93,19 @@
   topic info/echo/hz, счётчик отдельного подписчика и ros2 bag info. На живом потоке
   и replay reliable даёт timeout, best_effort получает Pose. Логи сохранены в
   `evidence/pr05/`; ручное повторение пользователем не заявляется.
+
+## PR06
+
+- Использован ИИ: да (`ai_used: true`).
+- Модель и версия: gpt-6.1-sol[1m] (идентификатор текущей среды).
+- Среда: Claude Code, терминал macOS; ROS-команды в Docker `ros2`.
+- Компоненты: `course_description` (Xacro, launch, RViz config, тесты), README,
+  CI с kit w06, ветка `pr06-defect` и evidence/pr06.
+- Помощь: изучение задания, лекции и геометрии SDF; создание параметризованного URDF,
+  тестов структуры/геометрии/инерции, запуск RSP/RViz; смена parent лидара в отдельном
+  коммите, измерение tf и повтор после исправления; опыт QoS позднего чтения tf_static.
+- Проверка: check_urdf, pytest (12 passed, 1 skipped для нового пакета), colcon
+  (62 tests, 0 errors, 0 failures, 4 skipped), tf2_echo/view_frames, реальный скриншот
+  RViz и явные профили QoS echo. На дефектной ветке parent-тест падает, check_urdf
+  принимает дерево; после исправления тест и координаты правильные. Логи сохранены;
+  самостоятельное ручное повторение пользователем не заявляется.
