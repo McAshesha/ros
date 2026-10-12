@@ -90,7 +90,7 @@
     <xacro:box_body mass="${0.1/3}" x="0.05" y="0.05" z="0.04" xyz="0 0 0" color="orange"/>
   </link>
   <joint name="lidar_joint" type="fixed">
-    <parent link="base_link"/><child link="lidar_link"/>
+    <parent link="camera_link"/><child link="lidar_link"/>
     <origin xyz="0.28 0 0.38"/>
   </joint>
   <link name="imu_link">
