@@ -3,8 +3,8 @@ name: ROS checks
 on: [push, pull_request]
 
 env:
-  COURSE_KIT_URL: https://ros.lms.ci.nsu.ru/downloads/robotics-course-kit-v1-w05-bca214e3de6f.tar.gz
-  COURSE_KIT_SHA256: bca214e3de6f90f9513049dfa0f36fee65ad834da502dc3f3f8fb443517b5197
+  COURSE_KIT_URL: https://ros.lms.ci.nsu.ru/downloads/robotics-course-kit-v1-w06-6eda53e1c566.tar.gz
+  COURSE_KIT_SHA256: 6eda53e1c566f7f0a7e09d7afe1e5a6f3b98397175a7e57dede9a84c6d14d0fe
 
 jobs:
   test:
@@ -35,6 +35,10 @@ jobs:
           python3 -m pytest src/course_bringup/test -p no:cacheprovider
           test -f "$(ros2 pkg prefix course_bringup)/share/course_bringup/launch/patrol.launch.py"
           ros2 launch course_bringup patrol.launch.py --show-args
+          python3 -m pytest src/course_description/test -p no:cacheprovider
+          xacro "$(ros2 pkg prefix course_description)/share/course_description/urdf/vehicle.urdf.xacro" > /tmp/vehicle.urdf
+          check_urdf /tmp/vehicle.urdf
+          ros2 launch course_description display.launch.py --show-args
       - name: Download course kit
         shell: bash
         run: |
@@ -49,4 +53,4 @@ jobs:
         shell: bash
         run: |
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
-          python3 .course-kit/v1/tools/check_practice.py PR05 --submission .
+          python3 .course-kit/v1/tools/check_practice.py PR06 --submission .

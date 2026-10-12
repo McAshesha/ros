@@ -14,10 +14,10 @@
 ## Course kit
 
 ```bash
-curl -fsSLO https://ros.lms.ci.nsu.ru/downloads/robotics-course-kit-v1-w05-bca214e3de6f.tar.gz
-curl -fsSLO https://ros.lms.ci.nsu.ru/downloads/robotics-course-kit-v1-w05-bca214e3de6f.tar.gz.sha256.txt
-sha256sum -c robotics-course-kit-v1-w05-bca214e3de6f.tar.gz.sha256.txt
-mkdir -p .course-kit && tar -xzf robotics-course-kit-v1-w05-bca214e3de6f.tar.gz -C .course-kit
+curl -fsSLO https://ros.lms.ci.nsu.ru/downloads/robotics-course-kit-v1-w06-6eda53e1c566.tar.gz
+curl -fsSLO https://ros.lms.ci.nsu.ru/downloads/robotics-course-kit-v1-w06-6eda53e1c566.tar.gz.sha256.txt
+sha256sum -c robotics-course-kit-v1-w06-6eda53e1c566.tar.gz.sha256.txt
+mkdir -p .course-kit && tar -xzf robotics-course-kit-v1-w06-6eda53e1c566.tar.gz -C .course-kit
 ```
 
 ## ПР01. Окружение и граф turtlesim
@@ -156,10 +156,31 @@ timeout 3s ros2 topic echo /robot_a/sensor_pose --qos-reliability best_effort --
 за `/robot_a/sensor_pose`; для другого namespace нужно изменить ключ в YAML.
 Реальные логи и единственная запись: `evidence/pr05/`, разбор — `demo.md`.
 
+## ПР06. Модель и tf
+
+`course_description` содержит Xacro Ackermann-модели по размерам SDF из kit w06.
+X вперёд, Y влево, Z вверх, метры/килограммы/секунды. Параметры: `wheelbase=0.8`,
+`track=0.62`, `wheel_radius=0.12`. Сенсоры fixed от `base_link`, колёса подвижные.
+
+```bash
+ros2 launch course_description display.launch.py
+# Без GUI для проверки tf:
+ros2 launch course_description display.launch.py rviz:=false
+# Для отображения колёс в уже работающем RViz, отдельный терминал:
+ros2 topic pub -r 10 /joint_states sensor_msgs/msg/JointState \
+  '{header: auto, name: [front_left_steering_joint, front_right_steering_joint, front_left_wheel_joint, front_right_wheel_joint, rear_left_wheel_joint, rear_right_wheel_joint], position: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]}'
+```
+
+Не запускайте два display.launch одновременно. RViz использует Fixed Frame `base_link`.
+Размеры датчиков для визуализации условные: SDF задаёт их poses, но не геометрию.
+Инерции рассчитаны по геометрии, а не скопированы в неверный frame из SDF.
+Дефект parent лидара — отдельная ветка `pr06-defect`, в main его нет.
+Разбор, таблица фреймов, QoS и скриншот: `evidence/pr06/`.
+
 ## CI
 
 `.github/workflows/ci.yml` проверяет JSON среды ПР01, ставит зависимости через
-`rosdep`, собирает все пакеты, проверяет установленные launch-файлы, запускает
-`colcon test` и отдельный `pytest` для `patrol` и `course_bringup`. После этого скачивает
-зафиксированный course kit `v1-w05` и запускает checker PR05. Живой опыт с GUI и replay
-выполняется локально.
+`rosdep`, собирает все пакеты, проверяет установленные launch-файлы и запускает
+`colcon test` и отдельные pytest. Для ПР06 разворачивает установленный Xacro и запускает
+`check_urdf`. После этого скачивает kit `v1-w06` и запускает checker PR06.
+Живые опыты и RViz проверяются локально.

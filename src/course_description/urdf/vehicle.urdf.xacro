@@ -1,0 +1,103 @@
+<?xml version="1.0"?>
+<robot name="course_ackermann" xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <!-- Размеры из models/course_ackermann/model.sdf (kit v1-w06), СИ, REP-103. -->
+  <xacro:arg name="wheelbase" default="0.8"/>
+  <xacro:arg name="track" default="0.62"/>
+  <xacro:arg name="wheel_radius" default="0.12"/>
+  <xacro:property name="wheelbase" value="$(arg wheelbase)"/>
+  <xacro:property name="track" value="$(arg track)"/>
+  <xacro:property name="wheel_radius" value="$(arg wheel_radius)"/>
+  <xacro:property name="wheel_width" value="0.07"/>
+
+  <material name="blue"><color rgba="0.15 0.35 0.8 1"/></material>
+  <material name="black"><color rgba="0.1 0.1 0.1 1"/></material>
+  <material name="orange"><color rgba="1 0.5 0.1 1"/></material>
+
+  <xacro:macro name="box_body" params="mass x y z xyz color">
+    <visual>
+      <origin xyz="${xyz}"/>
+      <geometry><box size="${x} ${y} ${z}"/></geometry>
+      <material name="${color}"/>
+    </visual>
+    <collision>
+      <origin xyz="${xyz}"/>
+      <geometry><box size="${x} ${y} ${z}"/></geometry>
+    </collision>
+    <inertial>
+      <origin xyz="${xyz}"/>
+      <mass value="${mass}"/>
+      <inertia ixx="${mass*(y*y+z*z)/12}" iyy="${mass*(x*x+z*z)/12}"
+               izz="${mass*(x*x+y*y)/12}" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+  </xacro:macro>
+
+  <link name="base_link">
+    <xacro:box_body mass="12" x="1.05" y="0.52" z="0.22" xyz="0 0 0.12" color="blue"/>
+  </link>
+
+  <xacro:macro name="wheel" params="name parent xyz">
+    <link name="${name}_wheel_link">
+      <visual>
+        <origin rpy="${pi/2} 0 0"/>
+        <geometry><cylinder radius="${wheel_radius}" length="${wheel_width}"/></geometry>
+        <material name="black"/>
+      </visual>
+      <collision>
+        <origin rpy="${pi/2} 0 0"/>
+        <geometry><cylinder radius="${wheel_radius}" length="${wheel_width}"/></geometry>
+      </collision>
+      <!-- Цилиндр вдоль Y; тензор выражен в неповёрнутом wheel_link. -->
+      <inertial>
+        <mass value="0.8"/>
+        <inertia ixx="${0.8*(3*wheel_radius**2+wheel_width**2)/12}"
+                 iyy="${0.8*wheel_radius**2/2}"
+                 izz="${0.8*(3*wheel_radius**2+wheel_width**2)/12}"
+                 ixy="0" ixz="0" iyz="0"/>
+      </inertial>
+    </link>
+    <joint name="${name}_wheel_joint" type="continuous">
+      <parent link="${parent}"/><child link="${name}_wheel_link"/>
+      <origin xyz="${xyz}"/><axis xyz="0 1 0"/>
+      <limit effort="25" velocity="20"/>
+    </joint>
+  </xacro:macro>
+
+  <xacro:macro name="front_wheel" params="name side">
+    <link name="${name}_knuckle_link">
+      <xacro:box_body mass="0.2" x="0.04" y="0.04" z="0.04" xyz="0 0 0" color="black"/>
+    </link>
+    <joint name="${name}_steering_joint" type="revolute">
+      <parent link="base_link"/><child link="${name}_knuckle_link"/>
+      <origin xyz="${wheelbase/2} ${side*track/2} 0"/><axis xyz="0 0 1"/>
+      <limit lower="-0.55" upper="0.55" effort="25" velocity="2"/>
+    </joint>
+    <xacro:wheel name="${name}" parent="${name}_knuckle_link" xyz="0 0 0"/>
+  </xacro:macro>
+  <xacro:front_wheel name="front_left" side="1"/>
+  <xacro:front_wheel name="front_right" side="-1"/>
+  <xacro:wheel name="rear_left" parent="base_link" xyz="${-wheelbase/2} ${track/2} 0"/>
+  <xacro:wheel name="rear_right" parent="base_link" xyz="${-wheelbase/2} ${-track/2} 0"/>
+
+  <!-- В SDF сенсоры совпадают по позе; небольшие боксы нужны для отображения в RViz. -->
+  <link name="camera_link">
+    <xacro:box_body mass="${0.1/3}" x="0.06" y="0.04" z="0.03" xyz="0 0 0" color="orange"/>
+  </link>
+  <joint name="camera_joint" type="fixed">
+    <parent link="base_link"/><child link="camera_link"/>
+    <origin xyz="0.28 0 0.38"/>
+  </joint>
+  <link name="lidar_link">
+    <xacro:box_body mass="${0.1/3}" x="0.05" y="0.05" z="0.04" xyz="0 0 0" color="orange"/>
+  </link>
+  <joint name="lidar_joint" type="fixed">
+    <parent link="base_link"/><child link="lidar_link"/>
+    <origin xyz="0.28 0 0.38"/>
+  </joint>
+  <link name="imu_link">
+    <xacro:box_body mass="${0.1/3}" x="0.02" y="0.02" z="0.01" xyz="0 0 0" color="orange"/>
+  </link>
+  <joint name="imu_joint" type="fixed">
+    <parent link="base_link"/><child link="imu_link"/>
+    <origin xyz="0.28 0 0.38"/>
+  </joint>
+</robot>
